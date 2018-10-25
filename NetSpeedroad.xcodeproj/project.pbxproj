@@ -12,7 +12,7 @@
 		A3306F5F21806CE900EE13FE /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A3306F5D21806CE900EE13FE /* Main.storyboard */; };
 		A3306F6121806D0000EE13FE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A3306F6021806D0000EE13FE /* Assets.xcassets */; };
 		A3306F6421806D0000EE13FE /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A3306F6221806D0000EE13FE /* LaunchScreen.storyboard */; };
-		A3306F6D21806FF800EE13FE /* Else.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3306F6C21806FF800EE13FE /* Else.swift */; };
+		A3306F6D21806FF800EE13FE /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3306F6C21806FF800EE13FE /* Utils.swift */; };
 		A3306F732180709600EE13FE /* RunsNetSpeedMeasurer.m in Sources */ = {isa = PBXBuildFile; fileRef = A3306F712180709600EE13FE /* RunsNetSpeedMeasurer.m */; };
 		A3306F75218070E300EE13FE /* ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3306F74218070E300EE13FE /* ViewModel.swift */; };
 /* End PBXBuildFile section */
@@ -25,7 +25,7 @@
 		A3306F6021806D0000EE13FE /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A3306F6321806D0000EE13FE /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A3306F6521806D0000EE13FE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		A3306F6C21806FF800EE13FE /* Else.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Else.swift; sourceTree = "<group>"; };
+		A3306F6C21806FF800EE13FE /* Utils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 		A3306F6E2180703D00EE13FE /* NetSpeedroad-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NetSpeedroad-Bridging-Header.h"; sourceTree = "<group>"; };
 		A3306F712180709600EE13FE /* RunsNetSpeedMeasurer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RunsNetSpeedMeasurer.m; sourceTree = "<group>"; };
 		A3306F722180709600EE13FE /* RunsNetSpeedMeasurer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RunsNetSpeedMeasurer.h; sourceTree = "<group>"; };
@@ -67,7 +67,7 @@
 				A3306F74218070E300EE13FE /* ViewModel.swift */,
 				A3306F5B21806CE900EE13FE /* ViewController.swift */,
 				A3306F5D21806CE900EE13FE /* Main.storyboard */,
-				A3306F6B21806FDC00EE13FE /* Utls */,
+				A3306F6B21806FDC00EE13FE /* Utils */,
 				A3306F6021806D0000EE13FE /* Assets.xcassets */,
 				A3306F6221806D0000EE13FE /* LaunchScreen.storyboard */,
 				A3306F6521806D0000EE13FE /* Info.plist */,
@@ -75,14 +75,14 @@
 			path = NetSpeedroad;
 			sourceTree = "<group>";
 		};
-		A3306F6B21806FDC00EE13FE /* Utls */ = {
+		A3306F6B21806FDC00EE13FE /* Utils */ = {
 			isa = PBXGroup;
 			children = (
 				A3306F722180709600EE13FE /* RunsNetSpeedMeasurer.h */,
 				A3306F712180709600EE13FE /* RunsNetSpeedMeasurer.m */,
-				A3306F6C21806FF800EE13FE /* Else.swift */,
+				A3306F6C21806FF800EE13FE /* Utils.swift */,
 			);
-			path = Utls;
+			path = Utils;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -161,7 +161,7 @@
 				A3306F5C21806CE900EE13FE /* ViewController.swift in Sources */,
 				A3306F732180709600EE13FE /* RunsNetSpeedMeasurer.m in Sources */,
 				A3306F5A21806CE900EE13FE /* AppDelegate.swift in Sources */,
-				A3306F6D21806FF800EE13FE /* Else.swift in Sources */,
+				A3306F6D21806FF800EE13FE /* Utils.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
