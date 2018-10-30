@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		77EEFD52331475EF5A6C7569 /* Pods_NetSpeedroad.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 39F4F8A4E5205AE6BB3EF112 /* Pods_NetSpeedroad.framework */; };
 		A3306F5A21806CE900EE13FE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3306F5921806CE900EE13FE /* AppDelegate.swift */; };
 		A3306F5C21806CE900EE13FE /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3306F5B21806CE900EE13FE /* ViewController.swift */; };
 		A3306F5F21806CE900EE13FE /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A3306F5D21806CE900EE13FE /* Main.storyboard */; };
@@ -18,6 +19,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		39F4F8A4E5205AE6BB3EF112 /* Pods_NetSpeedroad.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_NetSpeedroad.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		63A36D7B226CE54E88A1CC7F /* Pods-NetSpeedroad.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NetSpeedroad.release.xcconfig"; path = "Pods/Target Support Files/Pods-NetSpeedroad/Pods-NetSpeedroad.release.xcconfig"; sourceTree = "<group>"; };
+		883E494C7F53552A656C2BBC /* Pods-NetSpeedroad.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NetSpeedroad.debug.xcconfig"; path = "Pods/Target Support Files/Pods-NetSpeedroad/Pods-NetSpeedroad.debug.xcconfig"; sourceTree = "<group>"; };
 		A3306F5621806CE900EE13FE /* NetSpeedroad.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NetSpeedroad.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A3306F5921806CE900EE13FE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A3306F5B21806CE900EE13FE /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -37,17 +41,37 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				77EEFD52331475EF5A6C7569 /* Pods_NetSpeedroad.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0832E410D40B51D1899E043D /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				883E494C7F53552A656C2BBC /* Pods-NetSpeedroad.debug.xcconfig */,
+				63A36D7B226CE54E88A1CC7F /* Pods-NetSpeedroad.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		1F0A3241542A47D413C7A313 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				39F4F8A4E5205AE6BB3EF112 /* Pods_NetSpeedroad.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		A3306F4D21806CE900EE13FE = {
 			isa = PBXGroup;
 			children = (
 				A3306F5821806CE900EE13FE /* NetSpeedroad */,
 				A3306F5721806CE900EE13FE /* Products */,
+				0832E410D40B51D1899E043D /* Pods */,
+				1F0A3241542A47D413C7A313 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -92,9 +116,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = A3306F6821806D0000EE13FE /* Build configuration list for PBXNativeTarget "NetSpeedroad" */;
 			buildPhases = (
+				FC3EC3543E02359C9BE75423 /* [CP] Check Pods Manifest.lock */,
 				A3306F5221806CE900EE13FE /* Sources */,
 				A3306F5321806CE900EE13FE /* Frameworks */,
 				A3306F5421806CE900EE13FE /* Resources */,
+				3DAF6EE103909A8104D34652 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -151,6 +177,55 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		3DAF6EE103909A8104D34652 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-NetSpeedroad/Pods-NetSpeedroad-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/SNYKit/SNYKit.framework",
+				"${BUILT_PRODUCTS_DIR}/SVProgressHUD/SVProgressHUD.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SNYKit.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SVProgressHUD.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-NetSpeedroad/Pods-NetSpeedroad-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		FC3EC3543E02359C9BE75423 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-NetSpeedroad-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		A3306F5221806CE900EE13FE /* Sources */ = {
@@ -305,6 +380,7 @@
 		};
 		A3306F6921806D0000EE13FE /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 883E494C7F53552A656C2BBC /* Pods-NetSpeedroad.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -328,6 +404,7 @@
 		};
 		A3306F6A21806D0000EE13FE /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 63A36D7B226CE54E88A1CC7F /* Pods-NetSpeedroad.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;

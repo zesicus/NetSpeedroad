@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SNYKit
 
 @objc final class ViewModel: NSObject {
     
@@ -38,7 +39,6 @@ import UIKit
     var downloadTaskTwo: URLSessionDownloadTask!
     var downloadTaskThree: URLSessionDownloadTask!
     
-    var timer: Timer!
     let timerStopSec = 15
     var timerCurSec = 0
     var downloadCompleteHandler: (() -> Void)!
@@ -46,7 +46,6 @@ import UIKit
     override init() {
         super.init()
         
-        timer = Timer(timeInterval: 1.0, target: self, selector: #selector(timerAction), userInfo: nil, repeats: true)
         measurer = RunsNetSpeedMeasurer.init(accuracyLevel: 5, interval: 1.0)
         measurer.measurerBlock = { [weak self] result in
             guard let weakSelf = self else {return}
@@ -62,29 +61,32 @@ import UIKit
         }
     }
     
-    @objc func timerAction() {
-        if timerCurSec == timerStopSec {
-            timer.invalidate()
-            timerCurSec = 0
-            doneTest()
-            return
-        } else {
-            timerCurSec += 1
+    @objc func timerStart() {
+        SNY.gcd.scheduledDispatchTimer(WithTimerName: "Test", timeInterval: 1.0, queue: GCD.main, repeats: true) { [weak self] in
+            guard let weakSelf = self else {return}
+            if weakSelf.timerCurSec == weakSelf.timerStopSec {
+                weakSelf.timerCurSec = 0
+                weakSelf.doneTest()
+                return
+            } else {
+                weakSelf.timerCurSec += 1
+            }
+            print("上传Max：\(String(format: "%.2f", weakSelf.uplinkMaxSpeed)), 上传Min：\(String(format: "%.2f", weakSelf.uplinkMinSpeed)), 上传Avg：\(String(format: "%.2f", weakSelf.uplinkAvgSpeed)), 上传Cur：\(String(format: "%.2f", weakSelf.uplinkCurSpeed))")
+            print("下载Max：\(String(format: "%.2f", weakSelf.downlinkMaxSpeed)), 下载Min：\(String(format: "%.2f", weakSelf.downlinkMinSpeed)), 下载Avg：\(String(format: "%.2f", weakSelf.downlinkAvgSpeed)), 下载Cur：\(String(format: "%.2f", weakSelf.downlinkCurSpeed))")
+            print("==================================")
         }
-        print("上传Max：\(String(format: "%.2f", self.uplinkMaxSpeed)), 上传Min：\(String(format: "%.2f", self.uplinkMinSpeed)), 上传Avg：\(String(format: "%.2f", self.uplinkAvgSpeed)), 上传Cur：\(String(format: "%.2f", self.uplinkCurSpeed))")
-        print("下载Max：\(String(format: "%.2f", self.downlinkMaxSpeed)), 下载Min：\(String(format: "%.2f", self.downlinkMinSpeed)), 下载Avg：\(String(format: "%.2f", self.downlinkAvgSpeed)), 下载Cur：\(String(format: "%.2f", self.downlinkCurSpeed))")
-        print("==================================")
     }
     
     func startTest() {
+        
         getAddrs { [weak self] isSucceed in
             guard let weakSelf = self else {return}
-            
             if isSucceed {
-                weakSelf.measurer.execute()
+                GCD.main.async {
+                    weakSelf.measurer.execute()
+                }
                 weakSelf.downloadTest()
-                RunLoop.main.add(weakSelf.timer, forMode: .common)
-                weakSelf.timer.fire()
+                weakSelf.timerStart()
             } else {
                 // FIXME: 错误处理 - 更新Cocopods库 and back!
             }
@@ -93,7 +95,9 @@ import UIKit
     }
     
     func doneTest() {
-        timer.invalidate()
+        if SNY.gcd.isExistTimer(WithTimerName: "Test") {
+            SNY.gcd.cancleTimer(WithTimerName: "Test")
+        }
         measurer.shutdown()
         print("----------------------------------")
         print("下载完成")
@@ -129,7 +133,7 @@ import UIKit
     
     //获取接口地址
     func getAddrs(completion: @escaping (Bool) -> Void) {
-        if let carrier = Utils.getCarrierName() {
+        if let carrier = SNY.getCarrier() {
             let strUrl = "http://api.netspeedtestmaster.com/st/v2/resources/list/?app_type=1&channel=AppStore&country=\(carrier.countryCode)&isp=\(carrier.carrierName)&network=\(carrier.networkType)"
             let url = strUrl.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
             let dataTask = URLSession.shared.dataTask(with: URL(string: url)!) { [weak self] (data, response, err) in

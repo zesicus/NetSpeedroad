@@ -1,0 +1,23 @@
+PODS:
+  - SNYKit (2.0.1)
+  - SVProgressHUD (2.2.5)
+
+DEPENDENCIES:
+  - SNYKit (from `~/Documents/Programs/iOS/SNYKit`)
+  - SVProgressHUD
+
+SPEC REPOS:
+  https://github.com/cocoapods/specs.git:
+    - SVProgressHUD
+
+EXTERNAL SOURCES:
+  SNYKit:
+    :path: "~/Documents/Programs/iOS/SNYKit"
+
+SPEC CHECKSUMS:
+  SNYKit: 6d9df781bb3696b12d79354d5445d1aaec7ce67f
+  SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
+
+PODFILE CHECKSUM: 73f1636ec2d44f7240c4ecb616f167e4c0633d04
+
+COCOAPODS: 1.5.3

@@ -96,6 +96,7 @@
     _dispatchTimer = [NSTimer scheduledTimerWithTimeInterval:self.measurerInterval target:self selector:@selector(dispatch) userInfo:nil repeats:YES];
     NSRunLoop *runLoop = [NSRunLoop currentRunLoop];
     [runLoop addTimer:_dispatchTimer forMode:NSRunLoopCommonModes];
+    [_dispatchTimer fire];
 }
 
 - (void)shutdown {
