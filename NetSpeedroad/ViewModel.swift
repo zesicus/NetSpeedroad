@@ -8,6 +8,12 @@
 
 import UIKit
 import SNYKit
+import SVProgressHUD
+
+enum TestMode {
+    case download
+    case upload
+}
 
 @objc final class ViewModel: NSObject {
     
@@ -17,12 +23,12 @@ import SNYKit
     var downloadURL4: URL?
     var downloadURL5: URL?
     var downloadURL6: URL?
-    var uploadURL1: URL?
-    var uploadURL2: URL?
-    var uploadURL3: URL?
-    var uploadURL4: URL?
-    var uploadURL5: URL?
-    var uploadURL6: URL?
+    var uploadURL1 = ""
+    var uploadURL2 = ""
+    var uploadURL3 = ""
+    var uploadURL4 = ""
+    var uploadURL5 = ""
+    var uploadURL6 = ""
     
     var measurer: RunsNetSpeedMeasurer!
     var connectionType = "当前网络"
@@ -61,6 +67,8 @@ import SNYKit
         }
     }
     
+    //测速定时 15秒 未下载完成也停止
+    
     @objc func timerStart() {
         SNY.gcd.scheduledDispatchTimer(WithTimerName: "Test", timeInterval: 1.0, queue: GCD.main, repeats: true) { [weak self] in
             guard let weakSelf = self else {return}
@@ -77,7 +85,9 @@ import SNYKit
         }
     }
     
-    func startTest() {
+    //测速执行
+    
+    func startTest(testMode: TestMode) {
         
         getAddrs { [weak self] isSucceed in
             guard let weakSelf = self else {return}
@@ -85,14 +95,20 @@ import SNYKit
                 GCD.main.async {
                     weakSelf.measurer.execute()
                 }
-                weakSelf.downloadTest()
+                if testMode == .download {
+                    weakSelf.downloadTest()
+                } else {
+                    weakSelf.uploadTest()
+                }
                 weakSelf.timerStart()
             } else {
-                // FIXME: 错误处理 - 更新Cocopods库 and back!
+                SVProgressHUD.showError(withStatus: "接口获取失败")
             }
             
         }
     }
+    
+    //测速完成
     
     func doneTest() {
         if SNY.gcd.isExistTimer(WithTimerName: "Test") {
@@ -115,6 +131,8 @@ import SNYKit
         downloadCompleteHandler()
     }
     
+    //下载
+    
     func downloadTest() {
         let sessionOne = URLSession.init(configuration: URLSessionConfiguration.default, delegate: self, delegateQueue: OperationQueue.init())
         let sessionTwo = URLSession.init(configuration: URLSessionConfiguration.default, delegate: self, delegateQueue: OperationQueue.init())
@@ -131,7 +149,38 @@ import SNYKit
         sessionSix.downloadTask(with: downloadURL3!).resume()
     }
     
+    //上传
+    
+    func uploadTest() {
+        let sessionOne = URLSession.init(configuration: URLSessionConfiguration.default, delegate: self, delegateQueue: OperationQueue.init())
+        let sessionTwo = URLSession.init(configuration: URLSessionConfiguration.default, delegate: self, delegateQueue: OperationQueue.init())
+        let sessionThree = URLSession.init(configuration: URLSessionConfiguration.default, delegate: self, delegateQueue: OperationQueue.init())
+        let sessionFour = URLSession.init(configuration: URLSessionConfiguration.default, delegate: self, delegateQueue: OperationQueue.init())
+        let sessionFive = URLSession.init(configuration: URLSessionConfiguration.default, delegate: self, delegateQueue: OperationQueue.init())
+        let sessionSix = URLSession.init(configuration: URLSessionConfiguration.default, delegate: self, delegateQueue: OperationQueue.init())
+        
+        sessionOne.uploadTask(with: getUploadRequest(url: uploadURL1), fromFile: URL(string: Bundle.main.path(forResource: "UploadTestData", ofType: "txt")!)!).resume()
+        sessionTwo.uploadTask(with: getUploadRequest(url: uploadURL2), fromFile: URL(string: Bundle.main.path(forResource: "UploadTestData", ofType: "txt")!)!).resume()
+        sessionThree.uploadTask(with: getUploadRequest(url: uploadURL3), fromFile: URL(string: Bundle.main.path(forResource: "UploadTestData", ofType: "txt")!)!).resume()
+        sessionFour.uploadTask(with: getUploadRequest(url: uploadURL4), fromFile: URL(string: Bundle.main.path(forResource: "UploadTestData", ofType: "txt")!)!).resume()
+        sessionFive.uploadTask(with: getUploadRequest(url: uploadURL5), fromFile: URL(string: Bundle.main.path(forResource: "UploadTestData", ofType: "txt")!)!).resume()
+        sessionSix.uploadTask(with: getUploadRequest(url: uploadURL6), fromFile: URL(string: Bundle.main.path(forResource: "UploadTestData", ofType: "txt")!)!).resume()
+    }
+    
+    //上传请求封装
+    
+    func getUploadRequest(url: String) -> URLRequest {
+        var request = URLRequest(url: URL(string: url)!)
+        request.httpMethod = "POST"
+        let contentType = "multipart/form-data; boundary=----WebKitFormBoundaryftnnT7s3iF7wV5q6"
+        request.setValue(contentType, forHTTPHeaderField: "Content-Type")
+        request.setValue("*/*", forHTTPHeaderField: "Accept")
+        request.setValue("SpeedTest/76 CFNetwork/974.2.1 Darwin/18.0.0", forHTTPHeaderField: "User-Agent")
+        return request
+    }
+    
     //获取接口地址
+    
     func getAddrs(completion: @escaping (Bool) -> Void) {
         if let carrier = SNY.getCarrier() {
             let strUrl = "http://api.netspeedtestmaster.com/st/v2/resources/list/?app_type=1&channel=AppStore&country=\(carrier.countryCode)&isp=\(carrier.carrierName)&network=\(carrier.networkType)"
@@ -147,12 +196,12 @@ import SNYKit
                         weakSelf.downloadURL5 = URL(string: (dict["download"] as! [String])[4].addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!)!
                         weakSelf.downloadURL6 = URL(string: (dict["download"] as! [String])[5].addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!)!
                         
-                        weakSelf.uploadURL1 = URL(string: (dict["upload"] as! [String])[0].addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!)!
-                        weakSelf.uploadURL2 = URL(string: (dict["upload"] as! [String])[1].addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!)!
-                        weakSelf.uploadURL3 = URL(string: (dict["upload"] as! [String])[2].addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!)!
-                        weakSelf.uploadURL4 = URL(string: (dict["upload"] as! [String])[3].addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!)!
-                        weakSelf.uploadURL5 = URL(string: (dict["upload"] as! [String])[4].addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!)!
-                        weakSelf.uploadURL6 = URL(string: (dict["upload"] as! [String])[5].addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!)!
+                        weakSelf.uploadURL1 = (dict["upload"] as! [String])[0]
+                        weakSelf.uploadURL2 = (dict["upload"] as! [String])[1]
+                        weakSelf.uploadURL3 = (dict["upload"] as! [String])[2]
+                        weakSelf.uploadURL4 = (dict["upload"] as! [String])[3]
+                        weakSelf.uploadURL5 = (dict["upload"] as! [String])[4]
+                        weakSelf.uploadURL6 = (dict["upload"] as! [String])[5]
                         
                         completion(true)
                     }
