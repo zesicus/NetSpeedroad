@@ -160,11 +160,14 @@
 - (void)dispatch {
     RunsNetFragmentation *fragment = [self currentNetCardTrafficData];
     if(!fragment) return;
-    if (_fragmentArray.count >= self.maxFramentArrayCapacity) {
-        [_fragmentArray removeObjectAtIndex:0];
+    
+    if (fragment.inputBytesCount > 102400 || fragment.outputBytesCount > 102400) {
+        if (_fragmentArray.count >= self.maxFramentArrayCapacity) {
+            [_fragmentArray removeObjectAtIndex:0];
+        }
+        [self.fragmentArray addObject:fragment];
+        [self calculateSpeed];
     }
-    [self.fragmentArray addObject:fragment];
-    [self calculateSpeed];
 }
 
 - (void)calculateSpeed {

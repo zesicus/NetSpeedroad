@@ -17,6 +17,8 @@ enum TestMode {
 
 @objc final class ViewModel: NSObject {
     
+    var testMode: TestMode = .download
+    
     var downloadURL1: URL?
     var downloadURL2: URL?
     var downloadURL3: URL?
@@ -44,27 +46,47 @@ enum TestMode {
     var downloadTaskOne: URLSessionDownloadTask!
     var downloadTaskTwo: URLSessionDownloadTask!
     var downloadTaskThree: URLSessionDownloadTask!
+    var downloadTaskFour: URLSessionDownloadTask!
+    var downloadTaskFive: URLSessionDownloadTask!
+    var downloadTaskSix: URLSessionDownloadTask!
+    var uploadTaskOne: URLSessionUploadTask!
+    var uploadTaskTwo: URLSessionUploadTask!
+    var uploadTaskThree: URLSessionUploadTask!
+    var uploadTaskFour: URLSessionUploadTask!
+    var uploadTaskFive: URLSessionUploadTask!
+    var uploadTaskSix: URLSessionUploadTask!
     
     let timerStopSec = 15
     var timerCurSec = 0
-    var downloadCompleteHandler: (() -> Void)!
+    var downloadExecutingHandler: (() -> Void)!
+    var uploadExecutingHandler: (() -> Void)!
+    var testCompleteHandler: (() -> Void)!
     
     override init() {
         super.init()
+        
+        SVProgressHUD.setDefaultStyle(.dark)
         
         measurer = RunsNetSpeedMeasurer.init(accuracyLevel: 5, interval: 1.0)
         measurer.measurerBlock = { [weak self] result in
             guard let weakSelf = self else {return}
             weakSelf.connectionType = result.connectionType.rawValue == 0 ? "WWAN-移动数据网络" : "WiFi-无线网络"
-            weakSelf.uplinkMaxSpeed = result.uplinkMaxSpeed
-            weakSelf.uplinkMinSpeed = result.uplinkMinSpeed
-            weakSelf.uplinkAvgSpeed = result.uplinkAvgSpeed
-            weakSelf.uplinkCurSpeed = result.uplinkCurSpeed
-            weakSelf.downlinkMaxSpeed = result.downlinkMaxSpeed
-            weakSelf.downlinkMinSpeed = result.downlinkMinSpeed
-            weakSelf.downlinkAvgSpeed = result.downlinkAvgSpeed
-            weakSelf.downlinkCurSpeed = result.downlinkCurSpeed
         }
+    }
+    
+    //测速执行
+    
+    func startTest() {
+        
+        getAddrs { [weak self] isSucceed in
+            guard let weakSelf = self else {return}
+            if isSucceed {
+                weakSelf.downloadTest()
+            } else {
+                SVProgressHUD.showError(withStatus: "接口获取失败")
+            }
+        }
+        
     }
     
     //测速定时 15秒 未下载完成也停止
@@ -79,32 +101,14 @@ enum TestMode {
             } else {
                 weakSelf.timerCurSec += 1
             }
-            print("上传Max：\(String(format: "%.2f", weakSelf.uplinkMaxSpeed)), 上传Min：\(String(format: "%.2f", weakSelf.uplinkMinSpeed)), 上传Avg：\(String(format: "%.2f", weakSelf.uplinkAvgSpeed)), 上传Cur：\(String(format: "%.2f", weakSelf.uplinkCurSpeed))")
-            print("下载Max：\(String(format: "%.2f", weakSelf.downlinkMaxSpeed)), 下载Min：\(String(format: "%.2f", weakSelf.downlinkMinSpeed)), 下载Avg：\(String(format: "%.2f", weakSelf.downlinkAvgSpeed)), 下载Cur：\(String(format: "%.2f", weakSelf.downlinkCurSpeed))")
-            print("==================================")
-        }
-    }
-    
-    //测速执行
-    
-    func startTest(testMode: TestMode) {
-        
-        getAddrs { [weak self] isSucceed in
-            guard let weakSelf = self else {return}
-            if isSucceed {
-                GCD.main.async {
-                    weakSelf.measurer.execute()
-                }
-                if testMode == .download {
-                    weakSelf.downloadTest()
-                } else {
-                    weakSelf.uploadTest()
-                }
-                weakSelf.timerStart()
-            } else {
-                SVProgressHUD.showError(withStatus: "接口获取失败")
+            switch weakSelf.testMode {
+            case .download:
+                weakSelf.downloadExecutingHandler()
+                break
+            case .upload:
+                weakSelf.uploadExecutingHandler()
+                break
             }
-            
         }
     }
     
@@ -115,25 +119,34 @@ enum TestMode {
             SNY.gcd.cancleTimer(WithTimerName: "Test")
         }
         measurer.shutdown()
-        print("----------------------------------")
-        print("下载完成")
-        print("==================================")
-        print("上传最大速度：\(String(format: "%.2f", self.uplinkMaxSpeed))")
-        print("上传最小速度：\(String(format: "%.2f", self.uplinkMinSpeed))")
-        print("上传平均速度：\(String(format: "%.2f", self.uplinkAvgSpeed))")
-        print("上传当前速度：\(String(format: "%.2f", self.uplinkCurSpeed))")
-        print("==================================")
-        print("下载最大速度：\(String(format: "%.2f", self.downlinkMaxSpeed))")
-        print("下载最小速度：\(String(format: "%.2f", self.downlinkMinSpeed))")
-        print("下载平均速度：\(String(format: "%.2f", self.downlinkAvgSpeed))")
-        print("下载当前速度：\(String(format: "%.2f", self.downlinkCurSpeed))")
-        print("----------------------------------")
-        downloadCompleteHandler()
+        switch testMode {
+        case .download:
+            testMode = .upload
+            uploadTest()
+            break
+        case .upload:
+            testCompleteHandler()
+            testMode = .download
+            break
+        }
     }
     
     //下载
     
     func downloadTest() {
+        
+        GCD.main.async { [weak self] in
+            guard let weakSelf = self else {return}
+            weakSelf.measurer.measurerBlock = { result in
+                weakSelf.downlinkMaxSpeed = result.downlinkMaxSpeed
+                weakSelf.downlinkMinSpeed = result.downlinkMinSpeed
+                weakSelf.downlinkAvgSpeed = result.downlinkAvgSpeed
+                weakSelf.downlinkCurSpeed = result.downlinkCurSpeed
+            }
+            weakSelf.measurer.execute()
+        }
+        
+        
         let sessionOne = URLSession.init(configuration: URLSessionConfiguration.default, delegate: self, delegateQueue: OperationQueue.init())
         let sessionTwo = URLSession.init(configuration: URLSessionConfiguration.default, delegate: self, delegateQueue: OperationQueue.init())
         let sessionThree = URLSession.init(configuration: URLSessionConfiguration.default, delegate: self, delegateQueue: OperationQueue.init())
@@ -141,17 +154,29 @@ enum TestMode {
         let sessionFive = URLSession.init(configuration: URLSessionConfiguration.default, delegate: self, delegateQueue: OperationQueue.init())
         let sessionSix = URLSession.init(configuration: URLSessionConfiguration.default, delegate: self, delegateQueue: OperationQueue.init())
         
-        sessionOne.downloadTask(with: downloadURL1!).resume()
-        sessionTwo.downloadTask(with: downloadURL2!).resume()
-        sessionThree.downloadTask(with: downloadURL3!).resume()
-        sessionFour.downloadTask(with: downloadURL3!).resume()
-        sessionFive.downloadTask(with: downloadURL3!).resume()
-        sessionSix.downloadTask(with: downloadURL3!).resume()
+        downloadTaskOne = sessionOne.downloadTask(with: downloadURL1!); downloadTaskOne.resume()
+        downloadTaskTwo = sessionTwo.downloadTask(with: downloadURL2!); downloadTaskTwo.resume()
+        downloadTaskThree = sessionThree.downloadTask(with: downloadURL3!); downloadTaskThree.resume()
+        downloadTaskFour = sessionFour.downloadTask(with: downloadURL3!); downloadTaskFour.resume()
+        downloadTaskFive = sessionFive.downloadTask(with: downloadURL3!); downloadTaskFive.resume()
+        downloadTaskSix = sessionSix.downloadTask(with: downloadURL3!); downloadTaskSix.resume()
+        
+        timerStart()
     }
     
     //上传
     
     func uploadTest() {
+        
+        measurer.measurerBlock = { [weak self] result in
+            guard let weakSelf = self else {return}
+            weakSelf.uplinkMaxSpeed = result.uplinkMaxSpeed
+            weakSelf.uplinkMinSpeed = result.uplinkMinSpeed
+            weakSelf.uplinkAvgSpeed = result.uplinkAvgSpeed
+            weakSelf.uplinkCurSpeed = result.uplinkCurSpeed
+        }
+        measurer.execute()
+        
         let sessionOne = URLSession.init(configuration: URLSessionConfiguration.default, delegate: self, delegateQueue: OperationQueue.init())
         let sessionTwo = URLSession.init(configuration: URLSessionConfiguration.default, delegate: self, delegateQueue: OperationQueue.init())
         let sessionThree = URLSession.init(configuration: URLSessionConfiguration.default, delegate: self, delegateQueue: OperationQueue.init())
@@ -159,12 +184,14 @@ enum TestMode {
         let sessionFive = URLSession.init(configuration: URLSessionConfiguration.default, delegate: self, delegateQueue: OperationQueue.init())
         let sessionSix = URLSession.init(configuration: URLSessionConfiguration.default, delegate: self, delegateQueue: OperationQueue.init())
         
-        sessionOne.uploadTask(with: getUploadRequest(url: uploadURL1), fromFile: URL(string: Bundle.main.path(forResource: "UploadTestData", ofType: "txt")!)!).resume()
-        sessionTwo.uploadTask(with: getUploadRequest(url: uploadURL2), fromFile: URL(string: Bundle.main.path(forResource: "UploadTestData", ofType: "txt")!)!).resume()
-        sessionThree.uploadTask(with: getUploadRequest(url: uploadURL3), fromFile: URL(string: Bundle.main.path(forResource: "UploadTestData", ofType: "txt")!)!).resume()
-        sessionFour.uploadTask(with: getUploadRequest(url: uploadURL4), fromFile: URL(string: Bundle.main.path(forResource: "UploadTestData", ofType: "txt")!)!).resume()
-        sessionFive.uploadTask(with: getUploadRequest(url: uploadURL5), fromFile: URL(string: Bundle.main.path(forResource: "UploadTestData", ofType: "txt")!)!).resume()
-        sessionSix.uploadTask(with: getUploadRequest(url: uploadURL6), fromFile: URL(string: Bundle.main.path(forResource: "UploadTestData", ofType: "txt")!)!).resume()
+        uploadTaskOne = sessionOne.uploadTask(with: getUploadRequest(url: uploadURL1), fromFile: URL(string: Bundle.main.path(forResource: "UploadTestData", ofType: "txt")!)!); uploadTaskOne.resume()
+        uploadTaskTwo = sessionTwo.uploadTask(with: getUploadRequest(url: uploadURL2), fromFile: URL(string: Bundle.main.path(forResource: "UploadTestData", ofType: "txt")!)!); uploadTaskTwo.resume()
+        uploadTaskThree = sessionThree.uploadTask(with: getUploadRequest(url: uploadURL3), fromFile: URL(string: Bundle.main.path(forResource: "UploadTestData", ofType: "txt")!)!); uploadTaskThree.resume()
+        uploadTaskFour = sessionFour.uploadTask(with: getUploadRequest(url: uploadURL4), fromFile: URL(string: Bundle.main.path(forResource: "UploadTestData", ofType: "txt")!)!); uploadTaskFour.resume()
+        uploadTaskFive = sessionFive.uploadTask(with: getUploadRequest(url: uploadURL5), fromFile: URL(string: Bundle.main.path(forResource: "UploadTestData", ofType: "txt")!)!); uploadTaskFive.resume()
+        uploadTaskSix = sessionSix.uploadTask(with: getUploadRequest(url: uploadURL6), fromFile: URL(string: Bundle.main.path(forResource: "UploadTestData", ofType: "txt")!)!); uploadTaskSix.resume()
+        
+        timerStart()
     }
     
     //上传请求封装
@@ -215,15 +242,32 @@ enum TestMode {
     
 }
 
-extension ViewModel: URLSessionDownloadDelegate {
+extension ViewModel: URLSessionTaskDelegate {
     
-    func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didFinishDownloadingTo location: URL) {
-        let session1Done = downloadTask == downloadTaskOne && downloadTask.state == .completed
-        let session2Done = downloadTask == downloadTaskTwo && downloadTask.state == .completed
-        let session3Done = downloadTask == downloadTaskThree && downloadTask.state == .completed
-        if session1Done && session2Done && session3Done {
-            doneTest()
+    func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
+        if testMode == .download {
+            let session1Done = task == downloadTaskOne && task.state == .completed
+            let session2Done = task == downloadTaskTwo && task.state == .completed
+            let session3Done = task == downloadTaskThree && task.state == .completed
+            let session4Done = task == downloadTaskFour && task.state == .completed
+            let session5Done = task == downloadTaskFive && task.state == .completed
+            let session6Done = task == downloadTaskSix && task.state == .completed
+            if session1Done && session2Done && session3Done && session4Done && session5Done && session6Done {
+                doneTest()
+            }
+        } else {
+            let session1Done = task == uploadTaskOne && task.state == .completed
+            let session2Done = task == uploadTaskTwo && task.state == .completed
+            let session3Done = task == uploadTaskThree && task.state == .completed
+            let session4Done = task == uploadTaskFour && task.state == .completed
+            let session5Done = task == uploadTaskFive && task.state == .completed
+            let session6Done = task == uploadTaskSix && task.state == .completed
+            if session1Done && session2Done && session3Done && session4Done && session5Done && session6Done {
+                doneTest()
+            }
         }
     }
     
 }
+
+

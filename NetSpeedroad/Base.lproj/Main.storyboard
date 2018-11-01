@@ -18,41 +18,144 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="30" translatesAutoresizingMaskIntoConstraints="NO" id="5oF-Vh-3pi">
-                                <rect key="frame" x="156.5" y="288.5" width="62" height="90"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="下载速度" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dPY-RZ-pzu">
+                                <rect key="frame" x="55" y="144" width="69.5" height="20.5"/>
+                                <fontDescription key="fontDescription" type="system" weight="medium" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <stackView opaque="NO" contentMode="scaleToFill" spacing="150" translatesAutoresizingMaskIntoConstraints="NO" id="M4v-cg-vLC">
+                                <rect key="frame" x="55" y="184.5" width="265" height="54"/>
                                 <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8ql-gD-zak">
-                                        <rect key="frame" x="0.0" y="0.0" width="62" height="30"/>
-                                        <state key="normal" title="下载测速"/>
-                                        <connections>
-                                            <action selector="btnAction:" destination="BYZ-38-t0r" eventType="touchUpInside" id="UlV-cq-usf"/>
-                                        </connections>
-                                    </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="C2C-tb-ctS">
-                                        <rect key="frame" x="0.0" y="60" width="62" height="30"/>
-                                        <state key="normal" title="上传测速"/>
-                                        <connections>
-                                            <action selector="elseBtnAction:" destination="BYZ-38-t0r" eventType="touchUpInside" id="IGc-2w-k5S"/>
-                                        </connections>
-                                    </button>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="n9B-XI-mVF">
+                                        <rect key="frame" x="0.0" y="0.0" width="57.5" height="54"/>
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="最大速度" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FlI-Bh-Ccb">
+                                                <rect key="frame" x="0.0" y="0.0" width="57.5" height="17"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="平均速度" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NN8-1g-z9T">
+                                                <rect key="frame" x="0.0" y="37" width="57.5" height="17"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                        </subviews>
+                                    </stackView>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="iRz-uc-U9q">
+                                        <rect key="frame" x="207.5" y="0.0" width="57.5" height="54"/>
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="最小速度" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ych-wB-35E">
+                                                <rect key="frame" x="0.0" y="0.0" width="57.5" height="17"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="当前速度" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YEz-W2-CyB">
+                                                <rect key="frame" x="0.0" y="37" width="57.5" height="17"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                        </subviews>
+                                    </stackView>
                                 </subviews>
                             </stackView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="当前网络" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oqJ-ty-rNC">
+                                <rect key="frame" x="146.5" y="70" width="82" height="24"/>
+                                <fontDescription key="fontDescription" type="system" weight="medium" pointSize="20"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="上传速度" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0fc-zd-cus">
+                                <rect key="frame" x="55" y="268.5" width="69.5" height="20.5"/>
+                                <fontDescription key="fontDescription" type="system" weight="medium" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <stackView opaque="NO" contentMode="scaleToFill" spacing="150" translatesAutoresizingMaskIntoConstraints="NO" id="Dnl-iB-KbC">
+                                <rect key="frame" x="55" y="309" width="265" height="54"/>
+                                <subviews>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="KrS-aM-IfJ">
+                                        <rect key="frame" x="0.0" y="0.0" width="57.5" height="54"/>
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="最大速度" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="j1U-CQ-f6V">
+                                                <rect key="frame" x="0.0" y="0.0" width="57.5" height="17"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="平均速度" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JaK-LC-y6q">
+                                                <rect key="frame" x="0.0" y="37" width="57.5" height="17"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                        </subviews>
+                                    </stackView>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="6hx-ss-F6n">
+                                        <rect key="frame" x="207.5" y="0.0" width="57.5" height="54"/>
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="最小速度" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AVs-kf-2Qz">
+                                                <rect key="frame" x="0.0" y="0.0" width="57.5" height="17"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="当前速度" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Axb-oA-uEz">
+                                                <rect key="frame" x="0.0" y="37" width="57.5" height="17"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                        </subviews>
+                                    </stackView>
+                                </subviews>
+                            </stackView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DYr-51-tZB">
+                                <rect key="frame" x="156.5" y="537" width="62" height="30"/>
+                                <fontDescription key="fontDescription" type="system" weight="medium" pointSize="15"/>
+                                <state key="normal" title="开始测速"/>
+                                <connections>
+                                    <action selector="testAction:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Kzq-2S-npI"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="5oF-Vh-3pi" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="r8R-re-NYj"/>
-                            <constraint firstItem="5oF-Vh-3pi" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="uxh-KE-Sw9"/>
+                            <constraint firstItem="M4v-cg-vLC" firstAttribute="top" secondItem="dPY-RZ-pzu" secondAttribute="bottom" constant="20" id="0n6-YO-sI8"/>
+                            <constraint firstItem="0fc-zd-cus" firstAttribute="leading" secondItem="dPY-RZ-pzu" secondAttribute="leading" id="2Nz-Pi-pvK"/>
+                            <constraint firstItem="M4v-cg-vLC" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="IcL-0S-Wok"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="DYr-51-tZB" secondAttribute="bottom" constant="100" id="IxV-LG-Mjb"/>
+                            <constraint firstItem="0fc-zd-cus" firstAttribute="top" secondItem="M4v-cg-vLC" secondAttribute="bottom" constant="30" id="bPo-Lp-7jx"/>
+                            <constraint firstItem="M4v-cg-vLC" firstAttribute="leading" secondItem="dPY-RZ-pzu" secondAttribute="leading" id="dhy-jD-n13"/>
+                            <constraint firstItem="oqJ-ty-rNC" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="euV-dj-IMe"/>
+                            <constraint firstItem="DYr-51-tZB" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="fMr-PN-7eo"/>
+                            <constraint firstItem="dPY-RZ-pzu" firstAttribute="top" secondItem="oqJ-ty-rNC" secondAttribute="bottom" constant="50" id="fmm-Zg-7KH"/>
+                            <constraint firstItem="Dnl-iB-KbC" firstAttribute="top" secondItem="0fc-zd-cus" secondAttribute="bottom" constant="20" id="frx-FD-BkX"/>
+                            <constraint firstItem="oqJ-ty-rNC" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="50" id="vs3-Uj-af7"/>
+                            <constraint firstItem="Dnl-iB-KbC" firstAttribute="leading" secondItem="0fc-zd-cus" secondAttribute="leading" id="xLg-Qa-VjZ"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <connections>
-                        <outlet property="btn" destination="8ql-gD-zak" id="Hnn-Gf-C1b"/>
-                        <outlet property="elseBtn" destination="C2C-tb-ctS" id="qwa-Rd-yKY"/>
+                        <outlet property="downAvgLabel" destination="NN8-1g-z9T" id="dno-KM-MPY"/>
+                        <outlet property="downCurLabel" destination="YEz-W2-CyB" id="vrB-y0-G7e"/>
+                        <outlet property="downMaxLabel" destination="FlI-Bh-Ccb" id="3Py-43-J8Y"/>
+                        <outlet property="downMinLabel" destination="ych-wB-35E" id="5OS-dL-fiE"/>
+                        <outlet property="testBtn" destination="DYr-51-tZB" id="VDq-ng-Auy"/>
+                        <outlet property="titleLabel" destination="oqJ-ty-rNC" id="mja-23-VcY"/>
+                        <outlet property="upAvgLabel" destination="JaK-LC-y6q" id="5sn-zc-gPJ"/>
+                        <outlet property="upCurLabel" destination="Axb-oA-uEz" id="98v-KX-pLV"/>
+                        <outlet property="upMaxLabel" destination="j1U-CQ-f6V" id="uf6-tT-hVj"/>
+                        <outlet property="upMinLabel" destination="AVs-kf-2Qz" id="5W9-Wq-eW8"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="86" y="166"/>
+            <point key="canvasLocation" x="-318" y="178"/>
         </scene>
     </scenes>
 </document>
