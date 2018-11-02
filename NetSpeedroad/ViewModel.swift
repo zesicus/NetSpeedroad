@@ -10,16 +10,19 @@ import UIKit
 import SNYKit
 import SVProgressHUD
 import Reachability
+import PlainPing
 
 enum TestMode {
+    case ping
     case download
     case upload
 }
 
 @objc final class ViewModel: NSObject {
     
-    var testMode: TestMode = .download
+    var testMode: TestMode = .ping
     
+    var pingAddrs = [String]()
     var downloadURL1: URL?
     var downloadURL2: URL?
     var downloadURL3: URL?
@@ -33,8 +36,12 @@ enum TestMode {
     var uploadURL5 = ""
     var uploadURL6 = ""
     
+    //ping延迟队列
+    var pingResults = [Double]()
+    
     var measurer: RunsNetSpeedMeasurer!
     var connectionType = "当前网络"
+    var avgPing: Int = 0
     var uplinkMaxSpeed: Double = 0
     var uplinkMinSpeed: Double = 0
     var uplinkAvgSpeed: Double = 0
@@ -59,8 +66,10 @@ enum TestMode {
     
     let timerStopSec = 15
     var timerCurSec = 0
+    var pingExecutingHandler: ((Int) -> Void)!
     var downloadExecutingHandler: (() -> Void)!
     var uploadExecutingHandler: (() -> Void)!
+    var pingCompletehandler: ((Int) -> Void)!
     var checkCompleteHandler: (() -> Void)!
     var testCompleteHandler: (() -> Void)!
     
@@ -93,7 +102,9 @@ enum TestMode {
         getAddrs { [weak self] isSucceed in
             guard let weakSelf = self else {return}
             if isSucceed {
-                weakSelf.downloadTest()
+                GCD.main.async {
+                    weakSelf.pingTest()
+                }
             } else {
                 SVProgressHUD.showError(withStatus: "接口获取失败")
             }
@@ -101,45 +112,24 @@ enum TestMode {
         
     }
     
-    //测速定时 15秒 未下载完成也停止
+    //Ping
     
-    @objc func timerStart() {
-        SNY.gcd.scheduledDispatchTimer(WithTimerName: "Test", timeInterval: 1.0, queue: GCD.main, repeats: true) { [weak self] in
-            guard let weakSelf = self else {return}
-            if weakSelf.timerCurSec == weakSelf.timerStopSec {
-                weakSelf.timerCurSec = 0
-                weakSelf.doneTest()
-                return
-            } else {
-                weakSelf.timerCurSec += 1
-            }
-            switch weakSelf.testMode {
-            case .download:
-                weakSelf.downloadExecutingHandler()
-                break
-            case .upload:
-                weakSelf.uploadExecutingHandler()
-                break
-            }
-        }
-    }
-    
-    //测速完成
-    
-    func doneTest() {
-        if SNY.gcd.isExistTimer(WithTimerName: "Test") {
-            SNY.gcd.cancleTimer(WithTimerName: "Test")
-        }
-        measurer.shutdown()
-        switch testMode {
-        case .download:
-            testMode = .upload
-            uploadTest()
-            break
-        case .upload:
-            testCompleteHandler()
+    func pingTest() {
+        if pingAddrs.isEmpty {
+            //延迟检测完成
+            avgPing = Int(pingResults.reduce(0, +) / Double(pingResults.count))
+            pingCompletehandler(avgPing)
             testMode = .download
-            break
+            downloadTest()
+            return
+        }
+        let ping = pingAddrs.removeFirst()
+        PlainPing.ping(ping, withTimeout: 0.5) { [weak self] (elapse, err) in
+            if elapse != nil {
+                self?.pingResults.append(elapse!)
+                self?.pingExecutingHandler(Int(elapse!))
+            }
+            self?.pingTest()
         }
     }
     
@@ -206,6 +196,29 @@ enum TestMode {
         timerStart()
     }
     
+    //下载 上传 测速完成
+    
+    func doneTest() {
+        if SNY.gcd.isExistTimer(WithTimerName: "Test") {
+            SNY.gcd.cancleTimer(WithTimerName: "Test")
+        }
+        measurer.shutdown()
+        switch testMode {
+        case .ping:
+            break
+        case .download:
+            testMode = .upload
+            uploadTest()
+            break
+        case .upload:
+            testCompleteHandler()
+            testMode = .ping
+            pingResults.removeAll()
+            avgPing = 0
+            break
+        }
+    }
+    
     //上传请求封装
     
     func getUploadRequest(url: String) -> URLRequest {
@@ -228,6 +241,9 @@ enum TestMode {
                 guard let weakSelf = self else {return}
                 if err == nil && data != nil {
                     if let dict = Utils.decodeJSON(data: data!) {
+                        
+                        weakSelf.pingAddrs = dict["ping"] as! [String]
+                        
                         weakSelf.downloadURL1 = URL(string: (dict["download"] as! [String])[0].addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!)!
                         weakSelf.downloadURL2 = URL(string: (dict["download"] as! [String])[1].addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!)!
                         weakSelf.downloadURL3 = URL(string: (dict["download"] as! [String])[2].addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!)!
@@ -249,6 +265,31 @@ enum TestMode {
                 }
             }
             dataTask.resume()
+        }
+    }
+    
+    //上传 下载 测速计时
+    
+    @objc func timerStart() {
+        SNY.gcd.scheduledDispatchTimer(WithTimerName: "Test", timeInterval: 1.0, queue: GCD.main, repeats: true) { [weak self] in
+            guard let weakSelf = self else {return}
+            if weakSelf.timerCurSec == weakSelf.timerStopSec {
+                weakSelf.timerCurSec = 0
+                weakSelf.doneTest()
+                return
+            } else {
+                weakSelf.timerCurSec += 1
+            }
+            switch weakSelf.testMode {
+            case .download:
+                weakSelf.downloadExecutingHandler()
+                break
+            case .upload:
+                weakSelf.uploadExecutingHandler()
+                break
+            case .ping:
+                break
+            }
         }
     }
     

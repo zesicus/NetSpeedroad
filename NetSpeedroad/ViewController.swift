@@ -20,12 +20,13 @@ class ViewController: UIViewController {
     @IBOutlet weak var upAvgLabel: UILabel!
     @IBOutlet weak var upCurLabel: UILabel!
     @IBOutlet weak var testBtn: UIButton!
+    @IBOutlet weak var elapseLabel: UILabel!
+    @IBOutlet weak var bandwidthLabel: UILabel!
     
     lazy var viewModel = ViewModel()
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        viewModel.checkStatus()
         setupView()
         setupHandler()
     }
@@ -43,10 +44,20 @@ class ViewController: UIViewController {
     }
     
     func setupHandler() {
+        
+        viewModel.pingExecutingHandler = { [weak self] elaspe in
+            self?.elapseLabel.text = "\(elaspe) ms"
+        }
+        
+        viewModel.pingCompletehandler = { [weak self] elaspe in
+            self?.elapseLabel.text = "\(elaspe) ms"
+        }
+        
         viewModel.testCompleteHandler = { [weak self] in
+            guard let weakSelf = self else {return}
             self?.testBtn.isEnabled = true
+            self?.bandwidthLabel.text = "\(Int(weakSelf.viewModel.downlinkAvgSpeed * 8.0)) M"
             self?.testBtn.setTitle("重新测速", for: .normal)
-            self?.setupView()
         }
         
         viewModel.downloadExecutingHandler = { [weak self] in
@@ -69,9 +80,12 @@ class ViewController: UIViewController {
     }
     
     @IBAction func testAction(_ sender: UIButton) {
-        
+        setupView()
+        elapseLabel.text = "0 ms"
+        bandwidthLabel.text = "0 M"
         viewModel.startTest()
         testBtn.isEnabled = false
+        testBtn.setTitle("检测延迟中", for: .normal)
     }
     
 }
