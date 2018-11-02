@@ -1,13 +1,19 @@
 PODS:
+  - PlainPing (0.5)
+  - ReachabilitySwift (4.3.0)
   - SNYKit (2.0.1)
   - SVProgressHUD (2.2.5)
 
 DEPENDENCIES:
+  - PlainPing
+  - ReachabilitySwift
   - SNYKit (from `~/Documents/Programs/iOS/SNYKit`)
   - SVProgressHUD
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
+    - PlainPing
+    - ReachabilitySwift
     - SVProgressHUD
 
 EXTERNAL SOURCES:
@@ -15,9 +21,11 @@ EXTERNAL SOURCES:
     :path: "~/Documents/Programs/iOS/SNYKit"
 
 SPEC CHECKSUMS:
+  PlainPing: 6b248b94d92be7ec0410952d1b09af43b9a39015
+  ReachabilitySwift: 408477d1b6ed9779dba301953171e017c31241f3
   SNYKit: 6d9df781bb3696b12d79354d5445d1aaec7ce67f
   SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
 
-PODFILE CHECKSUM: 73f1636ec2d44f7240c4ecb616f167e4c0633d04
+PODFILE CHECKSUM: b73e0a46eee2c77acde507e420f933019d680622
 
 COCOAPODS: 1.5.3

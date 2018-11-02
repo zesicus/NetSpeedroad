@@ -25,12 +25,13 @@ class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        viewModel.checkStatus()
         setupView()
         setupHandler()
     }
     
     func setupView() {
+        titleLabel.text = viewModel.connectionType
         downMaxLabel.attributedText = "最大速度\n0.0 MB/s".getLineSpacing()
         downMinLabel.attributedText = "最小速度\n0.0 MB/s".getLineSpacing()
         downAvgLabel.attributedText = "平均速度\n0.0 MB/s".getLineSpacing()
@@ -74,4 +75,5 @@ class ViewController: UIViewController {
     }
     
 }
+
 

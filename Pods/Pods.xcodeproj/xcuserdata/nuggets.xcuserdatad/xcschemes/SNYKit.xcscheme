@@ -14,7 +14,7 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "8BB5F177BFC5D376F1CAFCD21F1EC1A1"
+               BlueprintIdentifier = "EB177F32621AED09C8787312F536183F"
                BlueprintName = "SNYKit"
                ReferencedContainer = "container:Pods.xcodeproj"
                BuildableName = "SNYKit.framework">

@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "CCFECB3195BF2A02F5597E33E0343F66"
+               BlueprintIdentifier = "6782A98CC2F85B07F91A46345ADC5714"
                BuildableName = "Pods_NetSpeedroad.framework"
                BlueprintName = "Pods-NetSpeedroad"
                ReferencedContainer = "container:Pods.xcodeproj">
@@ -45,7 +45,7 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "CCFECB3195BF2A02F5597E33E0343F66"
+            BlueprintIdentifier = "6782A98CC2F85B07F91A46345ADC5714"
             BuildableName = "Pods_NetSpeedroad.framework"
             BlueprintName = "Pods-NetSpeedroad"
             ReferencedContainer = "container:Pods.xcodeproj">

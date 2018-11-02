@@ -40,7 +40,7 @@ class MeterView: UIView {
     
     fileprivate var layerArray: [CAShapeLayer]!
     
-    fileprivate var textArray: [String]!
+    fileprivate var labelArray: [UILabel]!
     
     fileprivate var luCenter: CGPoint!
     
@@ -52,6 +52,15 @@ class MeterView: UIView {
     
     //根据此View自适应的表盘去掉外边线宽的半径
     fileprivate var calRadius: CGFloat!
+    
+    //当前最小值
+    var minValue: CGFloat!
+    
+    //当前最大值
+    var maxValue: CGFloat!
+    
+    //当前值
+    var currentValue: CGFloat!
     
     // MARK: - Functions
     
@@ -143,13 +152,58 @@ class MeterView: UIView {
         }
     }
     
+    
+    /// 画刻度值
+    ///
+    /// - Parameter divide: 刻度值等分
     func drawScaleValue(divide: Int) {
         if divide == 0 { return }
         let textAngle = self.arcAngle / CGFloat(divide)
         for i in 0 ..< divide {
-//            let point = calcuteTextPosition(with: center, angle: -(endAngle - textAngle * CGFloat(i)))
-//            let tickText = String(format: "%.1f", Float(i * ))
+            let point = calcuteTextPosition(with: center, angle: -(endAngle - textAngle * CGFloat(i)))
+            let tickText = String(format: "%.1f", Float(i))
+            let label = UILabel(frame: CGRect(x: point.x - 8, y: point.y - 7, width: 30, height: 14))
+            label.text = tickText
+            label.font = UIFont.systemFont(ofSize: 14.0)
+            label.textColor = .white
+            labelArray.append(label)
+            self.addSubview(label)
         }
+    }
+    
+    func refreshDashboard(curValue: CGFloat) {
+        currentValue = curValue
+        if currentValue > self.maxValue {
+            currentValue = self.maxValue
+        }
+        if currentValue < self.minValue {
+            currentValue = self.minValue
+        }
+        if self.progressLayer != nil {
+            self.progressLayer.removeFromSuperlayer()
+            self.progressLayer = nil
+        }
+        if self.insideProgressLayer != nil {
+            self.insideProgressLayer.removeFromSuperlayer()
+            self.insideProgressLayer = nil
+        }
+        if self.layerArray.count > 0 {
+            for layer in self.layerArray {
+                layer.removeFromSuperlayer()
+            }
+            self.layerArray.removeAll()
+        }
+        
+        //百分比
+        let percent = (currentValue - self.minValue) / (self.maxValue - self.minValue)
+        
+        //当前角度
+        let currentAngle = self.startAngle + (abs(self.endAngle - self.startAngle) * percent)
+        
+        //指针角度
+        let imageCurrentAngle = CGFloat.pi / 4 * 5 + (CGFloat.pi * 3 / 2 * percent)
+        
+        dashboardDraw(percent: percent, startAngle: startAngle, endAngle: currentAngle, imageCurrentAngle: imageCurrentAngle, curValue: currentValue)
     }
 
 }
@@ -172,6 +226,58 @@ extension MeterView {
         let x = (self.scaleValueRadius - 15) * cosh(angle)
         let y = (self.scaleValueRadius - 15) * sinh(angle)
         return CGPoint(x: center.x + x, y: center.y - y)
+    }
+    
+    //前景弧形绘制
+    func dashboardDraw(percent: CGFloat, startAngle: CGFloat, endAngle: CGFloat, imageCurrentAngle: CGFloat, curValue: CGFloat) {
+        
+        let progressPath = UIBezierPath(arcCenter: center, radius: self.arcRadius, startAngle: startAngle, endAngle: endAngle, clockwise: true)
+        self.progressLayer =  CAShapeLayer()
+        progressLayer.lineWidth = self.lineWidth
+        progressLayer.fillColor = UIColor.clear.cgColor
+        progressLayer.strokeColor = UIColor.white.cgColor
+        progressLayer.path = progressPath.cgPath
+        progressLayer.lineCap = .round
+        self.layer.addSublayer(progressLayer)
+        
+        let insideProgressPath = UIBezierPath(arcCenter: center, radius: self.arcRadius - 5, startAngle: startAngle, endAngle: endAngle, clockwise: true)
+        self.insideProgressLayer = CAShapeLayer()
+        insideProgressLayer.lineWidth = lineWidth + 0.25
+        insideProgressLayer.fillColor = UIColor.clear.cgColor
+        insideProgressLayer.strokeColor = UIColor.white.cgColor
+        insideProgressLayer.path = insideProgressPath.cgPath
+        insideProgressLayer.lineCap = .round
+        self.layer.addSublayer(insideProgressLayer)
+        
+        let perAngle = self.arcAngle / 100
+        let j = Int(CGFloat(divide) * percent)
+        for i in 0...j {
+            let theStartAngle = startAngle + perAngle * CGFloat(i)
+            let theEndAngle = theStartAngle + perAngle / 5
+            let tickPath = UIBezierPath(arcCenter: center, radius: self.scaleRadius, startAngle: theStartAngle, endAngle: theEndAngle, clockwise: true)
+            
+            let perLayer = CAShapeLayer()
+            perLayer.fillColor = UIColor.clear.cgColor
+            perLayer.strokeColor = UIColor.white.cgColor
+            if i % 10 == 0 {
+                perLayer.lineWidth = 10
+            } else {
+                perLayer.lineWidth = 5
+            }
+            perLayer.path = tickPath.cgPath
+            self.layerArray.append(perLayer)
+            self.layer.addSublayer(perLayer)
+        }
+        for label in labelArray {
+            if currentValue > CGFloat(Float(label.text ?? "0")!) {
+                label.textColor = UIColor.white
+            } else {
+                label.textColor = UIColor(r: 255, g: 255, b: 255).withAlphaComponent(0.33)
+            }
+        }
+        setAnchorPoint(CGPoint(x: 0.5, y: 0.82), for: innerCursorImageView)
+        innerCursorImageView.transform = CGAffineTransform(rotationAngle: imageCurrentAngle)
+        
     }
     
 }

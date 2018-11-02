@@ -9,6 +9,7 @@
 import UIKit
 import SNYKit
 import SVProgressHUD
+import Reachability
 
 enum TestMode {
     case download
@@ -60,17 +61,28 @@ enum TestMode {
     var timerCurSec = 0
     var downloadExecutingHandler: (() -> Void)!
     var uploadExecutingHandler: (() -> Void)!
+    var checkCompleteHandler: (() -> Void)!
     var testCompleteHandler: (() -> Void)!
     
     override init() {
         super.init()
         
         SVProgressHUD.setDefaultStyle(.dark)
-        
         measurer = RunsNetSpeedMeasurer.init(accuracyLevel: 5, interval: 1.0)
-        measurer.measurerBlock = { [weak self] result in
-            guard let weakSelf = self else {return}
-            weakSelf.connectionType = result.connectionType.rawValue == 0 ? "WWAN-移动数据网络" : "WiFi-无线网络"
+        checkStatus()
+    }
+    
+    //检测网络
+    
+    func checkStatus() {
+        let reachability = Reachability()!
+        switch reachability.connection {
+        case .wifi:
+            connectionType = "当前网络：Wi-Fi"
+        case .cellular:
+            connectionType = "当前网络：移动数据"
+        case .none:
+            connectionType = "当前网络：无网络"
         }
     }
     
