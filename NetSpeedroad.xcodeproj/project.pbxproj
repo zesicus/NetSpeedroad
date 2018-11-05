@@ -7,28 +7,30 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7611CE5821903297008F2AA2 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7611CE5721903297008F2AA2 /* MainViewController.swift */; };
 		76A29311218960C8005CB988 /* UploadTestData.txt in Resources */ = {isa = PBXBuildFile; fileRef = 76A29310218960C8005CB988 /* UploadTestData.txt */; };
 		76A2931321898D3F005CB988 /* MeterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76A2931221898D3F005CB988 /* MeterView.swift */; };
 		77EEFD52331475EF5A6C7569 /* Pods_NetSpeedroad.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 39F4F8A4E5205AE6BB3EF112 /* Pods_NetSpeedroad.framework */; };
 		A3306F5A21806CE900EE13FE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3306F5921806CE900EE13FE /* AppDelegate.swift */; };
-		A3306F5C21806CE900EE13FE /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3306F5B21806CE900EE13FE /* ViewController.swift */; };
+		A3306F5C21806CE900EE13FE /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3306F5B21806CE900EE13FE /* DetailViewController.swift */; };
 		A3306F5F21806CE900EE13FE /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A3306F5D21806CE900EE13FE /* Main.storyboard */; };
 		A3306F6121806D0000EE13FE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A3306F6021806D0000EE13FE /* Assets.xcassets */; };
 		A3306F6421806D0000EE13FE /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A3306F6221806D0000EE13FE /* LaunchScreen.storyboard */; };
 		A3306F6D21806FF800EE13FE /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3306F6C21806FF800EE13FE /* Utils.swift */; };
 		A3306F732180709600EE13FE /* RunsNetSpeedMeasurer.m in Sources */ = {isa = PBXBuildFile; fileRef = A3306F712180709600EE13FE /* RunsNetSpeedMeasurer.m */; };
-		A3306F75218070E300EE13FE /* ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3306F74218070E300EE13FE /* ViewModel.swift */; };
+		A3306F75218070E300EE13FE /* MainViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3306F74218070E300EE13FE /* MainViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		39F4F8A4E5205AE6BB3EF112 /* Pods_NetSpeedroad.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_NetSpeedroad.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		63A36D7B226CE54E88A1CC7F /* Pods-NetSpeedroad.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NetSpeedroad.release.xcconfig"; path = "Pods/Target Support Files/Pods-NetSpeedroad/Pods-NetSpeedroad.release.xcconfig"; sourceTree = "<group>"; };
+		7611CE5721903297008F2AA2 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		76A29310218960C8005CB988 /* UploadTestData.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = UploadTestData.txt; sourceTree = "<group>"; };
 		76A2931221898D3F005CB988 /* MeterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeterView.swift; sourceTree = "<group>"; };
 		883E494C7F53552A656C2BBC /* Pods-NetSpeedroad.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NetSpeedroad.debug.xcconfig"; path = "Pods/Target Support Files/Pods-NetSpeedroad/Pods-NetSpeedroad.debug.xcconfig"; sourceTree = "<group>"; };
 		A3306F5621806CE900EE13FE /* NetSpeedroad.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NetSpeedroad.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A3306F5921806CE900EE13FE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		A3306F5B21806CE900EE13FE /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		A3306F5B21806CE900EE13FE /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
 		A3306F5E21806CE900EE13FE /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		A3306F6021806D0000EE13FE /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A3306F6321806D0000EE13FE /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -37,7 +39,7 @@
 		A3306F6E2180703D00EE13FE /* NetSpeedroad-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NetSpeedroad-Bridging-Header.h"; sourceTree = "<group>"; };
 		A3306F712180709600EE13FE /* RunsNetSpeedMeasurer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RunsNetSpeedMeasurer.m; sourceTree = "<group>"; };
 		A3306F722180709600EE13FE /* RunsNetSpeedMeasurer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RunsNetSpeedMeasurer.h; sourceTree = "<group>"; };
-		A3306F74218070E300EE13FE /* ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModel.swift; sourceTree = "<group>"; };
+		A3306F74218070E300EE13FE /* MainViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -69,6 +71,43 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		7611CE59219052CD008F2AA2 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				A3306F74218070E300EE13FE /* MainViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		7611CE5A219052DD008F2AA2 /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				A3306F5D21806CE900EE13FE /* Main.storyboard */,
+				7611CE5721903297008F2AA2 /* MainViewController.swift */,
+				A3306F5B21806CE900EE13FE /* DetailViewController.swift */,
+			);
+			path = ViewControllers;
+			sourceTree = "<group>";
+		};
+		7611CE5B219052E9008F2AA2 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				76A2931221898D3F005CB988 /* MeterView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		7611CE5C21905502008F2AA2 /* Others */ = {
+			isa = PBXGroup;
+			children = (
+				A3306F6521806D0000EE13FE /* Info.plist */,
+				A3306F6221806D0000EE13FE /* LaunchScreen.storyboard */,
+				A3306F5921806CE900EE13FE /* AppDelegate.swift */,
+				A3306F6E2180703D00EE13FE /* NetSpeedroad-Bridging-Header.h */,
+			);
+			path = Others;
+			sourceTree = "<group>";
+		};
 		A3306F4D21806CE900EE13FE = {
 			isa = PBXGroup;
 			children = (
@@ -90,16 +129,12 @@
 		A3306F5821806CE900EE13FE /* NetSpeedroad */ = {
 			isa = PBXGroup;
 			children = (
-				A3306F6E2180703D00EE13FE /* NetSpeedroad-Bridging-Header.h */,
-				A3306F5921806CE900EE13FE /* AppDelegate.swift */,
-				76A2931221898D3F005CB988 /* MeterView.swift */,
-				A3306F74218070E300EE13FE /* ViewModel.swift */,
-				A3306F5B21806CE900EE13FE /* ViewController.swift */,
-				A3306F5D21806CE900EE13FE /* Main.storyboard */,
+				7611CE5B219052E9008F2AA2 /* Views */,
+				7611CE59219052CD008F2AA2 /* ViewModels */,
+				7611CE5A219052DD008F2AA2 /* ViewControllers */,
 				A3306F6B21806FDC00EE13FE /* Utils */,
+				7611CE5C21905502008F2AA2 /* Others */,
 				A3306F6021806D0000EE13FE /* Assets.xcassets */,
-				A3306F6221806D0000EE13FE /* LaunchScreen.storyboard */,
-				A3306F6521806D0000EE13FE /* Info.plist */,
 			);
 			path = NetSpeedroad;
 			sourceTree = "<group>";
@@ -243,8 +278,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A3306F75218070E300EE13FE /* ViewModel.swift in Sources */,
-				A3306F5C21806CE900EE13FE /* ViewController.swift in Sources */,
+				A3306F75218070E300EE13FE /* MainViewModel.swift in Sources */,
+				A3306F5C21806CE900EE13FE /* DetailViewController.swift in Sources */,
+				7611CE5821903297008F2AA2 /* MainViewController.swift in Sources */,
 				76A2931321898D3F005CB988 /* MeterView.swift in Sources */,
 				A3306F732180709600EE13FE /* RunsNetSpeedMeasurer.m in Sources */,
 				A3306F5A21806CE900EE13FE /* AppDelegate.swift in Sources */,
@@ -398,7 +434,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = 5437SLU6K6;
-				INFOPLIST_FILE = NetSpeedroad/Info.plist;
+				INFOPLIST_FILE = NetSpeedroad/Others/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -407,7 +443,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.nuggets.any;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = Any_dev;
-				SWIFT_OBJC_BRIDGING_HEADER = "NetSpeedroad/NetSpeedroad-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "NetSpeedroad/Others/NetSpeedroad-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = 1;
@@ -423,7 +459,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = 5437SLU6K6;
-				INFOPLIST_FILE = NetSpeedroad/Info.plist;
+				INFOPLIST_FILE = NetSpeedroad/Others/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -432,7 +468,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.nuggets.any;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = Any_hoc;
-				SWIFT_OBJC_BRIDGING_HEADER = "NetSpeedroad/NetSpeedroad-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "NetSpeedroad/Others/NetSpeedroad-Bridging-Header.h";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = 1;
 			};

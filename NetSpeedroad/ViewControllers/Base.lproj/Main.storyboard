@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="cQ1-GB-1pz">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -11,10 +11,10 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--View Controller-->
+        <!--Detail View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="NetSpeedroad" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="BYZ-38-t0r" customClass="DetailViewController" customModule="NetSpeedroad" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -212,6 +212,71 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-826" y="153"/>
+        </scene>
+        <!--Main View Controller-->
+        <scene sceneID="rEE-eQ-rfp">
+            <objects>
+                <viewController id="cQ1-GB-1pz" customClass="MainViewController" customModule="NetSpeedroad" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="ePb-lM-OMn">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4ml-kR-k8i" customClass="MeterView" customModule="NetSpeedroad" customModuleProvider="target">
+                                <rect key="frame" x="67.5" y="133.5" width="240" height="240"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="240" id="Jeg-Qc-abl"/>
+                                    <constraint firstAttribute="height" constant="240" id="rKK-hJ-z6Z"/>
+                                </constraints>
+                            </view>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="当前网络" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vHV-tI-R7P">
+                                <rect key="frame" x="146.5" y="70" width="82" height="24"/>
+                                <fontDescription key="fontDescription" type="system" weight="medium" pointSize="20"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="速度" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rMe-fo-wyq">
+                                <rect key="frame" x="171" y="423.5" width="33" height="19.5"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="poq-ZM-01z">
+                                <rect key="frame" x="127.5" y="523" width="120" height="35"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="35" id="L3R-4j-M7S"/>
+                                    <constraint firstAttribute="width" constant="120" id="pjv-91-9Cj"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" weight="medium" pointSize="15"/>
+                                <state key="normal" title="开始">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
+                                <connections>
+                                    <action selector="startAction:" destination="cQ1-GB-1pz" eventType="touchUpInside" id="0ha-Hy-0Ch"/>
+                                    <action selector="testAction:" destination="BYZ-38-t0r" eventType="touchUpInside" id="HD4-6b-weh"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="vHV-tI-R7P" firstAttribute="centerX" secondItem="0mb-s1-V0R" secondAttribute="centerX" id="0vs-1V-9p7"/>
+                            <constraint firstItem="poq-ZM-01z" firstAttribute="centerX" secondItem="0mb-s1-V0R" secondAttribute="centerX" id="9fe-hK-pFK"/>
+                            <constraint firstItem="vHV-tI-R7P" firstAttribute="top" secondItem="0mb-s1-V0R" secondAttribute="top" constant="50" id="A4g-Dq-Gfh"/>
+                            <constraint firstItem="rMe-fo-wyq" firstAttribute="top" secondItem="4ml-kR-k8i" secondAttribute="bottom" constant="50" id="Bee-Io-pgR"/>
+                            <constraint firstItem="4ml-kR-k8i" firstAttribute="centerX" secondItem="ePb-lM-OMn" secondAttribute="centerX" id="Gvx-DH-1Nb"/>
+                            <constraint firstItem="poq-ZM-01z" firstAttribute="top" secondItem="rMe-fo-wyq" secondAttribute="bottom" constant="80" id="Un4-lx-Ri5"/>
+                            <constraint firstItem="rMe-fo-wyq" firstAttribute="centerX" secondItem="vHV-tI-R7P" secondAttribute="centerX" id="ZmN-6B-9R1"/>
+                            <constraint firstItem="4ml-kR-k8i" firstAttribute="centerY" secondItem="ePb-lM-OMn" secondAttribute="centerY" constant="-80" id="afi-AY-WBQ"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="0mb-s1-V0R"/>
+                    </view>
+                    <connections>
+                        <outlet property="meterView" destination="4ml-kR-k8i" id="fei-lY-tD7"/>
+                        <outlet property="startBtn" destination="poq-ZM-01z" id="gKi-AK-uJG"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="m12-GQ-a0B" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1626" y="152"/>
         </scene>
     </scenes>
 </document>

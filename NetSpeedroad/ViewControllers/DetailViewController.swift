@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class DetailViewController: UIViewController {
     
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var downMaxLabel: UILabel!
@@ -23,7 +23,7 @@ class ViewController: UIViewController {
     @IBOutlet weak var elapseLabel: UILabel!
     @IBOutlet weak var bandwidthLabel: UILabel!
     
-    lazy var viewModel = ViewModel()
+    lazy var viewModel = MainViewModel()
 
     override func viewDidLoad() {
         super.viewDidLoad()

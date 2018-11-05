@@ -18,7 +18,7 @@ enum TestMode {
     case upload
 }
 
-@objc final class ViewModel: NSObject {
+@objc final class MainViewModel: NSObject {
     
     var testMode: TestMode = .ping
     
@@ -295,7 +295,7 @@ enum TestMode {
     
 }
 
-extension ViewModel: URLSessionTaskDelegate {
+extension MainViewModel: URLSessionTaskDelegate {
     
     func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
         if testMode == .download {
