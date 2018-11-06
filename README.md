@@ -4,7 +4,7 @@
 
 仿测速大师
 
-> 测试地址来源测速大师接口提供
+> 测试地址来源于测速大师
 
 ![Screenshot](https://github.com/zesicus/NetSpeedroad/blob/master/pic.jpeg?raw=true)
 
