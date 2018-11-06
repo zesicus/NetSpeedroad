@@ -210,6 +210,12 @@ enum TestMode {
         case .ping:
             break
         case .download:
+            downloadTaskOne.suspend()
+            downloadTaskTwo.suspend()
+            downloadTaskThree.suspend()
+            downloadTaskFour.suspend()
+            downloadTaskFive.suspend()
+            downloadTaskSix.suspend()
             testMode = .upload
             bandwidth = Int(downlinkAvgSpeed * 8.0)
             uploadTest()
