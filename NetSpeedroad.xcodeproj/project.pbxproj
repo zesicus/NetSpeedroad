@@ -452,9 +452,9 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.nuggets.any;
+				PRODUCT_BUNDLE_IDENTIFIER = com.nuggets.netspeedroad;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = Any_dev;
+				PROVISIONING_PROFILE_SPECIFIER = NetSpeedroad_dev;
 				SWIFT_OBJC_BRIDGING_HEADER = "NetSpeedroad/Others/NetSpeedroad-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 4.2;
@@ -477,9 +477,9 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.nuggets.any;
+				PRODUCT_BUNDLE_IDENTIFIER = com.nuggets.netspeedroad;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = Any_hoc;
+				PROVISIONING_PROFILE_SPECIFIER = NetSpeedroad_hoc;
 				SWIFT_OBJC_BRIDGING_HEADER = "NetSpeedroad/Others/NetSpeedroad-Bridging-Header.h";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = 1;
