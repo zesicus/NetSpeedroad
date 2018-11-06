@@ -42,23 +42,26 @@ class MeterView: UIView {
     var progressThenLayer: CAShapeLayer!
     
     //读数
-    var label: UILabel!
+    @IBOutlet weak var label: UILabel!
+    @IBOutlet weak var unitLabel: UILabel!
     
     override func awakeFromNib() {
         super.awakeFromNib()
         
-        panCenter = CGPoint(x: frame.size.width / 2, y: frame.size.height / 2)
-        panOutsideRadius = frame.size.width / 2
-        panInsideRadius = frame.size.width / 2 - 10
+        backgroundColor = .clear
         
-        label = UILabel(frame: self.frame)
         label.textColor = .white
         label.font = UIFont.systemFont(ofSize: 30.0, weight: .medium)
-        self.addSubview(label)
-        
-        let unitLabel = UILabel(frame: CGRect(x: 0, y: 0, width: 50, height: 10))
-        unitLabel.center = CGPoint(x: panCenter.x + 50, y: panCenter.y - 50)
-        label.addSubview(unitLabel)
+        unitLabel.textColor = .white
+        unitLabel.font = UIFont.systemFont(ofSize: 12)
+    }
+    
+    override var frame: CGRect {
+        didSet {
+            panCenter = CGPoint(x: frame.size.width / 2, y: frame.size.height / 2)
+            panOutsideRadius = frame.size.width / 2
+            panInsideRadius = frame.size.width / 2 - 15
+        }
     }
     
     //设置表盘
@@ -104,7 +107,7 @@ extension MeterView {
         let progressThinPath = UIBezierPath(arcCenter: panCenter, radius: panOutsideRadius, startAngle: startAngle, endAngle: endAngle, clockwise: true)
         progressThenLayer = CAShapeLayer()
         progressThenLayer.strokeColor = UIColor.white.cgColor
-        progressThenLayer.lineWidth = 2.0
+        progressThenLayer.lineWidth = 3.0
         progressThenLayer.fillColor = UIColor.clear.cgColor
         progressThenLayer.lineCap = .square
         progressThenLayer.path = progressThinPath.cgPath

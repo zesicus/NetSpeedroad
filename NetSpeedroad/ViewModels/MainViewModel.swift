@@ -20,27 +20,44 @@ enum TestMode {
 
 @objc final class MainViewModel: NSObject {
     
-    var testMode: TestMode = .ping
+    fileprivate var testMode: TestMode = .ping
     
-    var pingAddrs = [String]()
-    var downloadURL1: URL?
-    var downloadURL2: URL?
-    var downloadURL3: URL?
-    var downloadURL4: URL?
-    var downloadURL5: URL?
-    var downloadURL6: URL?
-    var uploadURL1 = ""
-    var uploadURL2 = ""
-    var uploadURL3 = ""
-    var uploadURL4 = ""
-    var uploadURL5 = ""
-    var uploadURL6 = ""
+    fileprivate var pingAddrs = [String]()
+    fileprivate var downloadURL1: URL?
+    fileprivate var downloadURL2: URL?
+    fileprivate var downloadURL3: URL?
+    fileprivate var downloadURL4: URL?
+    fileprivate var downloadURL5: URL?
+    fileprivate var downloadURL6: URL?
+    fileprivate var uploadURL1 = ""
+    fileprivate var uploadURL2 = ""
+    fileprivate var uploadURL3 = ""
+    fileprivate var uploadURL4 = ""
+    fileprivate var uploadURL5 = ""
+    fileprivate var uploadURL6 = ""
+    
+    fileprivate var measurer: RunsNetSpeedMeasurer!
+    
+    fileprivate var downloadTaskOne: URLSessionDownloadTask!
+    fileprivate var downloadTaskTwo: URLSessionDownloadTask!
+    fileprivate var downloadTaskThree: URLSessionDownloadTask!
+    fileprivate var downloadTaskFour: URLSessionDownloadTask!
+    fileprivate var downloadTaskFive: URLSessionDownloadTask!
+    fileprivate var downloadTaskSix: URLSessionDownloadTask!
+    fileprivate var uploadTaskOne: URLSessionUploadTask!
+    fileprivate var uploadTaskTwo: URLSessionUploadTask!
+    fileprivate var uploadTaskThree: URLSessionUploadTask!
+    fileprivate var uploadTaskFour: URLSessionUploadTask!
+    fileprivate var uploadTaskFive: URLSessionUploadTask!
+    fileprivate var uploadTaskSix: URLSessionUploadTask!
+    
+    fileprivate let timerStopSec = 15
+    fileprivate var timerCurSec = 0
     
     //ping延迟队列
-    var pingResults = [Double]()
+    fileprivate var pingResults = [Double]()
     
-    var measurer: RunsNetSpeedMeasurer!
-    var connectionType = "当前网络"
+    var connectionType = ""
     var avgPing: Int = 0
     var uplinkMaxSpeed: Double = 0
     var uplinkMinSpeed: Double = 0
@@ -50,22 +67,8 @@ enum TestMode {
     var downlinkMinSpeed: Double = 0
     var downlinkAvgSpeed: Double = 0
     var downlinkCurSpeed: Double = 0
+    var bandwidth: Int = 0
     
-    var downloadTaskOne: URLSessionDownloadTask!
-    var downloadTaskTwo: URLSessionDownloadTask!
-    var downloadTaskThree: URLSessionDownloadTask!
-    var downloadTaskFour: URLSessionDownloadTask!
-    var downloadTaskFive: URLSessionDownloadTask!
-    var downloadTaskSix: URLSessionDownloadTask!
-    var uploadTaskOne: URLSessionUploadTask!
-    var uploadTaskTwo: URLSessionUploadTask!
-    var uploadTaskThree: URLSessionUploadTask!
-    var uploadTaskFour: URLSessionUploadTask!
-    var uploadTaskFive: URLSessionUploadTask!
-    var uploadTaskSix: URLSessionUploadTask!
-    
-    let timerStopSec = 15
-    var timerCurSec = 0
     var pingExecutingHandler: ((Int) -> Void)!
     var downloadExecutingHandler: (() -> Void)!
     var uploadExecutingHandler: (() -> Void)!
@@ -83,15 +86,15 @@ enum TestMode {
     
     //检测网络
     
-    func checkStatus() {
+    fileprivate func checkStatus() {
         let reachability = Reachability()!
         switch reachability.connection {
         case .wifi:
-            connectionType = "当前网络：Wi-Fi"
+            connectionType = "Wi-Fi"
         case .cellular:
-            connectionType = "当前网络：移动数据"
+            connectionType = SNY.getCarrier()?.networkType ?? "移动网络"
         case .none:
-            connectionType = "当前网络：无网络"
+            connectionType = "无网络"
         }
     }
     
@@ -114,7 +117,7 @@ enum TestMode {
     
     //Ping
     
-    func pingTest() {
+    fileprivate func pingTest() {
         if pingAddrs.isEmpty {
             //延迟检测完成
             avgPing = Int(pingResults.reduce(0, +) / Double(pingResults.count))
@@ -135,7 +138,7 @@ enum TestMode {
     
     //下载
     
-    func downloadTest() {
+    fileprivate func downloadTest() {
         
         GCD.main.async { [weak self] in
             guard let weakSelf = self else {return}
@@ -168,7 +171,7 @@ enum TestMode {
     
     //上传
     
-    func uploadTest() {
+    fileprivate func uploadTest() {
         
         measurer.measurerBlock = { [weak self] result in
             guard let weakSelf = self else {return}
@@ -198,7 +201,7 @@ enum TestMode {
     
     //下载 上传 测速完成
     
-    func doneTest() {
+    fileprivate func doneTest() {
         if SNY.gcd.isExistTimer(WithTimerName: "Test") {
             SNY.gcd.cancleTimer(WithTimerName: "Test")
         }
@@ -208,6 +211,7 @@ enum TestMode {
             break
         case .download:
             testMode = .upload
+            bandwidth = Int(downlinkAvgSpeed * 8.0)
             uploadTest()
             break
         case .upload:
@@ -221,7 +225,7 @@ enum TestMode {
     
     //上传请求封装
     
-    func getUploadRequest(url: String) -> URLRequest {
+    fileprivate func getUploadRequest(url: String) -> URLRequest {
         var request = URLRequest(url: URL(string: url)!)
         request.httpMethod = "POST"
         let contentType = "multipart/form-data; boundary=----WebKitFormBoundaryftnnT7s3iF7wV5q6"
@@ -233,7 +237,7 @@ enum TestMode {
     
     //获取接口地址
     
-    func getAddrs(completion: @escaping (Bool) -> Void) {
+    fileprivate func getAddrs(completion: @escaping (Bool) -> Void) {
         if let carrier = SNY.getCarrier() {
             let strUrl = "http://api.netspeedtestmaster.com/st/v2/resources/list/?app_type=1&channel=AppStore&country=\(carrier.countryCode)&isp=\(carrier.carrierName)&network=\(carrier.networkType)"
             let url = strUrl.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
@@ -270,7 +274,7 @@ enum TestMode {
     
     //上传 下载 测速计时
     
-    @objc func timerStart() {
+    @objc fileprivate func timerStart() {
         SNY.gcd.scheduledDispatchTimer(WithTimerName: "Test", timeInterval: 1.0, queue: GCD.main, repeats: true) { [weak self] in
             guard let weakSelf = self else {return}
             if weakSelf.timerCurSec == weakSelf.timerStopSec {
@@ -297,7 +301,7 @@ enum TestMode {
 
 extension MainViewModel: URLSessionTaskDelegate {
     
-    func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
+    fileprivate func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
         if testMode == .download {
             let session1Done = task == downloadTaskOne && task.state == .completed
             let session2Done = task == downloadTaskTwo && task.state == .completed

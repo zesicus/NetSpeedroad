@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		7611CE5821903297008F2AA2 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7611CE5721903297008F2AA2 /* MainViewController.swift */; };
+		7611CE5E219135E0008F2AA2 /* DetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7611CE5D219135E0008F2AA2 /* DetailViewModel.swift */; };
+		7611CE6221914901008F2AA2 /* MeterView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7611CE6121914901008F2AA2 /* MeterView.xib */; };
+		7611CE64219172E4008F2AA2 /* NavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7611CE63219172E4008F2AA2 /* NavigationController.swift */; };
 		76A29311218960C8005CB988 /* UploadTestData.txt in Resources */ = {isa = PBXBuildFile; fileRef = 76A29310218960C8005CB988 /* UploadTestData.txt */; };
 		76A2931321898D3F005CB988 /* MeterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76A2931221898D3F005CB988 /* MeterView.swift */; };
 		77EEFD52331475EF5A6C7569 /* Pods_NetSpeedroad.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 39F4F8A4E5205AE6BB3EF112 /* Pods_NetSpeedroad.framework */; };
@@ -25,6 +28,9 @@
 		39F4F8A4E5205AE6BB3EF112 /* Pods_NetSpeedroad.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_NetSpeedroad.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		63A36D7B226CE54E88A1CC7F /* Pods-NetSpeedroad.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NetSpeedroad.release.xcconfig"; path = "Pods/Target Support Files/Pods-NetSpeedroad/Pods-NetSpeedroad.release.xcconfig"; sourceTree = "<group>"; };
 		7611CE5721903297008F2AA2 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
+		7611CE5D219135E0008F2AA2 /* DetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewModel.swift; sourceTree = "<group>"; };
+		7611CE6121914901008F2AA2 /* MeterView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MeterView.xib; sourceTree = "<group>"; };
+		7611CE63219172E4008F2AA2 /* NavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationController.swift; sourceTree = "<group>"; };
 		76A29310218960C8005CB988 /* UploadTestData.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = UploadTestData.txt; sourceTree = "<group>"; };
 		76A2931221898D3F005CB988 /* MeterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeterView.swift; sourceTree = "<group>"; };
 		883E494C7F53552A656C2BBC /* Pods-NetSpeedroad.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NetSpeedroad.debug.xcconfig"; path = "Pods/Target Support Files/Pods-NetSpeedroad/Pods-NetSpeedroad.debug.xcconfig"; sourceTree = "<group>"; };
@@ -75,6 +81,7 @@
 			isa = PBXGroup;
 			children = (
 				A3306F74218070E300EE13FE /* MainViewModel.swift */,
+				7611CE5D219135E0008F2AA2 /* DetailViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -82,9 +89,9 @@
 		7611CE5A219052DD008F2AA2 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
-				A3306F5D21806CE900EE13FE /* Main.storyboard */,
 				7611CE5721903297008F2AA2 /* MainViewController.swift */,
 				A3306F5B21806CE900EE13FE /* DetailViewController.swift */,
+				7611CE63219172E4008F2AA2 /* NavigationController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -93,6 +100,7 @@
 			isa = PBXGroup;
 			children = (
 				76A2931221898D3F005CB988 /* MeterView.swift */,
+				7611CE6121914901008F2AA2 /* MeterView.xib */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -129,6 +137,7 @@
 		A3306F5821806CE900EE13FE /* NetSpeedroad */ = {
 			isa = PBXGroup;
 			children = (
+				A3306F5D21806CE900EE13FE /* Main.storyboard */,
 				7611CE5B219052E9008F2AA2 /* Views */,
 				7611CE59219052CD008F2AA2 /* ViewModels */,
 				7611CE5A219052DD008F2AA2 /* ViewControllers */,
@@ -213,6 +222,7 @@
 			files = (
 				A3306F6421806D0000EE13FE /* LaunchScreen.storyboard in Resources */,
 				A3306F6121806D0000EE13FE /* Assets.xcassets in Resources */,
+				7611CE6221914901008F2AA2 /* MeterView.xib in Resources */,
 				A3306F5F21806CE900EE13FE /* Main.storyboard in Resources */,
 				76A29311218960C8005CB988 /* UploadTestData.txt in Resources */,
 			);
@@ -282,9 +292,11 @@
 				A3306F5C21806CE900EE13FE /* DetailViewController.swift in Sources */,
 				7611CE5821903297008F2AA2 /* MainViewController.swift in Sources */,
 				76A2931321898D3F005CB988 /* MeterView.swift in Sources */,
+				7611CE64219172E4008F2AA2 /* NavigationController.swift in Sources */,
 				A3306F732180709600EE13FE /* RunsNetSpeedMeasurer.m in Sources */,
 				A3306F5A21806CE900EE13FE /* AppDelegate.swift in Sources */,
 				A3306F6D21806FF800EE13FE /* Utils.swift in Sources */,
+				7611CE5E219135E0008F2AA2 /* DetailViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
