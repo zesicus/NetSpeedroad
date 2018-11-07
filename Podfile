@@ -3,7 +3,7 @@ platform :ios, '9.0'
 use_frameworks!
 
 target 'NetSpeedroad' do
-    pod 'SNYKit', :path => '~/Documents/Programs/iOS/SNYKit'
+    pod 'SNYKit'
     pod 'SVProgressHUD'
     pod 'PlainPing'
     pod 'ReachabilitySwift'
