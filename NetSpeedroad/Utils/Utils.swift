@@ -32,4 +32,11 @@ class Utils {
         }
     }
     
+    
+    var getNetPermission: CTCellularDataRestrictedState {
+        let cellularData = CTCellularData()
+        let status = cellularData.restrictedState
+        return status
+    }
+    
 }

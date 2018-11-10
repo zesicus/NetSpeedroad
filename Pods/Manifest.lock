@@ -1,7 +1,7 @@
 PODS:
   - PlainPing (0.5)
   - ReachabilitySwift (4.3.0)
-  - SNYKit (2.0.1)
+  - SNYKit (2.0.2)
   - SVProgressHUD (2.2.5)
 
 DEPENDENCIES:
@@ -20,7 +20,7 @@ SPEC REPOS:
 SPEC CHECKSUMS:
   PlainPing: 6b248b94d92be7ec0410952d1b09af43b9a39015
   ReachabilitySwift: 408477d1b6ed9779dba301953171e017c31241f3
-  SNYKit: 5b8b4aecdbc36faadca61f673270f34147fdffbc
+  SNYKit: 2872873d5bb376c5ac1a1874b85fadc9a378eaca
   SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
 
 PODFILE CHECKSUM: 53fd37fb66b3d0b69dd3cbf312828171797cc88b

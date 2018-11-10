@@ -79,7 +79,7 @@ enum TestMode {
     override init() {
         super.init()
         
-        SVProgressHUD.setDefaultStyle(.dark)
+        SVProgressHUD.setDefaultStyle(.light)
         measurer = RunsNetSpeedMeasurer.init(accuracyLevel: 5, interval: 1.0)
         checkStatus()
     }
@@ -100,11 +100,12 @@ enum TestMode {
     
     //测速执行
     
-    func startTest() {
+    func startTest(_ completion: @escaping () -> Void) {
         
         getAddrs { [weak self] isSucceed in
             guard let weakSelf = self else {return}
             if isSucceed {
+                completion()
                 GCD.main.async {
                     weakSelf.pingTest()
                 }

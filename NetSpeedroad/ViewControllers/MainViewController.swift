@@ -50,11 +50,26 @@ class MainViewController: UIViewController {
     }
 
     @IBAction func startAction(_ sender: UIButton) {
-        sender.isEnabled = false
-        sender.setTitle("执行中", for: .normal)
-        sender.setTitleColor(UIColor.lightGray, for: .normal)
+        switch SNY.netPermission {
+        case .restricted:
+            let alert = UIAlertController(title: "提示", message: "", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "好", style: .default, handler: nil))
+            self.present(alert, animated: true, completion: nil)
+            break
+        case .notRestricted:
+            viewModel.startTest {
+                sender.isEnabled = false
+                sender.setTitle("执行中", for: .normal)
+                sender.setTitleColor(UIColor.lightGray, for: .normal)
+            }
+            break
+        default:
+            let alert = UIAlertController(title: "提示", message: "您未开启网络权限，请到 设置->测速者->无线数据->选择 WLAN 与蜂窝移动网", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "好", style: .default, handler: nil))
+            self.present(alert, animated: true, completion: nil)
+            break
+        }
         
-        viewModel.startTest()
     }
     
 }
