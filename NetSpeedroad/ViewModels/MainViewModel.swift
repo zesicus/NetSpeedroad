@@ -8,7 +8,6 @@
 
 import UIKit
 import SNYKit
-import SVProgressHUD
 import Reachability
 import PlainPing
 
@@ -16,6 +15,12 @@ enum TestMode {
     case ping
     case download
     case upload
+}
+
+enum StartStatus {
+    case normal //可正常开始
+    case interfaceFail //接口数据未获取
+    case noNetAccess //无网络状态
 }
 
 @objc final class MainViewModel: NSObject {
@@ -76,10 +81,11 @@ enum TestMode {
     var checkCompleteHandler: (() -> Void)!
     var testCompleteHandler: (() -> Void)!
     
+    // MARK: - Functions
+    
     override init() {
         super.init()
         
-        SVProgressHUD.setDefaultStyle(.light)
         measurer = RunsNetSpeedMeasurer.init(accuracyLevel: 5, interval: 1.0)
         checkStatus()
     }
@@ -91,26 +97,35 @@ enum TestMode {
         switch reachability.connection {
         case .wifi:
             connectionType = "Wi-Fi"
+            break
         case .cellular:
             connectionType = SNY.getCarrier()?.networkType ?? "移动网络"
+            break
         case .none:
             connectionType = "无网络"
+            break
         }
     }
     
     //测速执行
     
-    func startTest(_ completion: @escaping () -> Void) {
+    func startTest(_ completion: @escaping (StartStatus) -> Void) {
         
-        getAddrs { [weak self] isSucceed in
+        getAddrs { [weak self] status in
             guard let weakSelf = self else {return}
-            if isSucceed {
-                completion()
+            switch status {
+            case .normal:
+                completion(.normal)
                 GCD.main.async {
                     weakSelf.pingTest()
                 }
-            } else {
-                SVProgressHUD.showError(withStatus: "接口获取失败")
+                break
+            case .interfaceFail:
+                completion(.noNetAccess)
+                break
+            case .noNetAccess:
+                completion(.noNetAccess)
+                break
             }
         }
         
@@ -244,39 +259,57 @@ enum TestMode {
     
     //获取接口地址
     
-    fileprivate func getAddrs(completion: @escaping (Bool) -> Void) {
+    fileprivate func getAddrs(_ completion: @escaping (StartStatus) -> Void) {
         if let carrier = SNY.getCarrier() {
-            let strUrl = "http://api.netspeedtestmaster.com/st/v2/resources/list/?app_type=1&channel=AppStore&country=\(carrier.countryCode)&isp=\(carrier.carrierName)&network=\(carrier.networkType)"
-            let url = strUrl.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
-            let dataTask = URLSession.shared.dataTask(with: URL(string: url)!) { [weak self] (data, response, err) in
-                guard let weakSelf = self else {return}
-                if err == nil && data != nil {
-                    if let dict = Utils.decodeJSON(data: data!) {
-                        
-                        weakSelf.pingAddrs = dict["ping"] as! [String]
-                        
-                        weakSelf.downloadURL1 = URL(string: (dict["download"] as! [String])[0].addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!)!
-                        weakSelf.downloadURL2 = URL(string: (dict["download"] as! [String])[1].addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!)!
-                        weakSelf.downloadURL3 = URL(string: (dict["download"] as! [String])[2].addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!)!
-                        weakSelf.downloadURL4 = URL(string: (dict["download"] as! [String])[3].addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!)!
-                        weakSelf.downloadURL5 = URL(string: (dict["download"] as! [String])[4].addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!)!
-                        weakSelf.downloadURL6 = URL(string: (dict["download"] as! [String])[5].addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!)!
-                        
-                        weakSelf.uploadURL1 = (dict["upload"] as! [String])[0]
-                        weakSelf.uploadURL2 = (dict["upload"] as! [String])[1]
-                        weakSelf.uploadURL3 = (dict["upload"] as! [String])[2]
-                        weakSelf.uploadURL4 = (dict["upload"] as! [String])[3]
-                        weakSelf.uploadURL5 = (dict["upload"] as! [String])[4]
-                        weakSelf.uploadURL6 = (dict["upload"] as! [String])[5]
-                        
-                        completion(true)
-                    }
-                } else {
-                    completion(false)
-                }
+            //真机有Sim的环境下都没问题
+            addrGetter(with: carrier.countryCode, carrierName: carrier.carrierName, networkType: carrier.networkType, completion: completion)
+        } else {
+            //其他环境的话只能判断网络了
+            switch SNY.networkType {
+            case .wifi:
+                addrGetter(with: "CN", carrierName: "中国电信", networkType: "wifi", completion: completion)
+                break
+            case .cellular:
+                addrGetter(with: "CN", carrierName: "中国电信", networkType: "4G", completion: completion)
+                break
+            case .none:
+                completion(.noNetAccess)
+                break
             }
-            dataTask.resume()
         }
+    }
+    
+    fileprivate func addrGetter(with countryCode: String, carrierName: String, networkType: String, completion: @escaping (StartStatus) -> Void) {
+        let strUrl = "http://api.netspeedtestmaster.com/st/v2/resources/list/?app_type=1&channel=AppStore&country=\(countryCode)&isp=\(carrierName)&network=\(networkType)"
+        let url = strUrl.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
+        let dataTask = URLSession.shared.dataTask(with: URL(string: url)!) { [weak self] (data, response, err) in
+            guard let weakSelf = self else {return}
+            if err == nil && data != nil {
+                if let dict = Utils.decodeJSON(data: data!) {
+                    
+                    weakSelf.pingAddrs = dict["ping"] as! [String]
+                    
+                    weakSelf.downloadURL1 = URL(string: (dict["download"] as! [String])[0].addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!)!
+                    weakSelf.downloadURL2 = URL(string: (dict["download"] as! [String])[1].addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!)!
+                    weakSelf.downloadURL3 = URL(string: (dict["download"] as! [String])[2].addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!)!
+                    weakSelf.downloadURL4 = URL(string: (dict["download"] as! [String])[3].addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!)!
+                    weakSelf.downloadURL5 = URL(string: (dict["download"] as! [String])[4].addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!)!
+                    weakSelf.downloadURL6 = URL(string: (dict["download"] as! [String])[5].addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!)!
+                    
+                    weakSelf.uploadURL1 = (dict["upload"] as! [String])[0]
+                    weakSelf.uploadURL2 = (dict["upload"] as! [String])[1]
+                    weakSelf.uploadURL3 = (dict["upload"] as! [String])[2]
+                    weakSelf.uploadURL4 = (dict["upload"] as! [String])[3]
+                    weakSelf.uploadURL5 = (dict["upload"] as! [String])[4]
+                    weakSelf.uploadURL6 = (dict["upload"] as! [String])[5]
+                    
+                    completion(.normal)
+                }
+            } else {
+                completion(.interfaceFail)
+            }
+        }
+        dataTask.resume()
     }
     
     //上传 下载 测速计时

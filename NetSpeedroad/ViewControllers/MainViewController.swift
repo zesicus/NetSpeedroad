@@ -50,24 +50,41 @@ class MainViewController: UIViewController {
     }
 
     @IBAction func startAction(_ sender: UIButton) {
-        switch SNY.netPermission {
-        case .restricted:
-            let alert = UIAlertController(title: "提示", message: "", preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "好", style: .default, handler: nil))
-            self.present(alert, animated: true, completion: nil)
-            break
-        case .notRestricted:
-            viewModel.startTest {
-                sender.isEnabled = false
-                sender.setTitle("执行中", for: .normal)
-                sender.setTitleColor(UIColor.lightGray, for: .normal)
+        sender.isEnabled = false
+        sender.setTitle("准备中", for: .normal)
+        sender.setTitleColor(UIColor.lightGray, for: .normal)
+        viewModel.startTest { (status) in
+            switch status {
+            case .normal:
+                GCD.main.async { [weak self] in
+                    guard let weakSelf = self else {return}
+                    sender.isEnabled = false
+                    sender.setTitle("执行中", for: .normal)
+                    sender.setTitleColor(UIColor.lightGray, for: .normal)
+                    weakSelf.networkLabel.text = "网络类型：\(weakSelf.viewModel.connectionType)"
+                }
+                break
+            case .interfaceFail:
+                let alert = UIAlertController(title: "提示", message: "接口数据获取失败\n请稍后再试！", preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "好", style: .default, handler: nil))
+                self.present(alert, animated: true, completion: nil)
+                GCD.main.async {
+                    sender.isEnabled = true
+                    sender.setTitle("开始", for: .normal)
+                    sender.setTitleColor(UIColor.white, for: .normal)
+                }
+                break
+            case .noNetAccess:
+                let alert = UIAlertController(title: "无网络连接", message: "如果您关闭了网络连接，请到 设置->测速者->无线数据->选择 WLAN 与蜂窝移动网", preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "好", style: .default, handler: nil))
+                self.present(alert, animated: true, completion: nil)
+                GCD.main.async {
+                    sender.isEnabled = true
+                    sender.setTitle("开始", for: .normal)
+                    sender.setTitleColor(UIColor.white, for: .normal)
+                }
+                break
             }
-            break
-        default:
-            let alert = UIAlertController(title: "提示", message: "您未开启网络权限，请到 设置->测速者->无线数据->选择 WLAN 与蜂窝移动网", preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "好", style: .default, handler: nil))
-            self.present(alert, animated: true, completion: nil)
-            break
         }
         
     }

@@ -4,7 +4,5 @@ use_frameworks!
 
 target 'NetSpeedroad' do
     pod 'SNYKit'
-    pod 'SVProgressHUD'
     pod 'PlainPing'
-    pod 'ReachabilitySwift'
 end
