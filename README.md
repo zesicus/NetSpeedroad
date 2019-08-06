@@ -2,8 +2,6 @@
 
 测网速 测延迟 上下行
 
-源码提供大家学习参考
-
 > 测试地址来源于测速大师
 
 ![Screenshot](https://github.com/zesicus/NetSpeedroad/blob/master/pic.jpeg?raw=true)
